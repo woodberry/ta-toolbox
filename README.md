@@ -1,4 +1,4 @@
-ta-count-back-line
+ta-toolbox
 ==================
 
-Darry Guppy's Count Back Line (CBL) Technical Analysis Indicator
+Technical Analysis Toolbox - A collection of  lesser known Technical Analysis Indicators
