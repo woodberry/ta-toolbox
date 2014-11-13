@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Inherit defaults from Spring Boot -->
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <groupId>au.net.woodberry</groupId>
+    <artifactId>ta-toolbox</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Technical Analysis :: Toolbox</name>
+
+    <distributionManagement>
+        <repository>
+            <id>woodberry-nexus</id>
+            <name>Woodberry Nexus Releases</name>
+            <url>http://repositories.woodberry.net.au/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>woodberry-nexus</id>
+            <name>Woodberry Nexus Snapshots</name>
+            <url>http://repositories.woodberry.net.au/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>woodberry-nexus</id>
+            <name>Woodberry Nexus Repository</name>
+            <url>http://repositories.woodberry.net.au/nexus/content/groups/public/</url>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <properties>
+        <source-compatibility>1.7</source-compatibility>
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>eu.verdelhan</groupId>
+            <artifactId>ta4j</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${source-compatibility}</source>
+                        <target>${source-compatibility}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
