@@ -5,12 +5,12 @@ import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.TimeSeries;
 import java.util.List;
 
-public class Entry extends CachedIndicator<TADecimal> {
+public class CountBackEntry extends CachedIndicator<TADecimal> {
 
     private final List<TADecimal> cblValues;
     private final TimeSeries data;
 
-    public Entry(TimeSeries data, List<TADecimal> cblValues) {
+    public CountBackEntry(TimeSeries data, List<TADecimal> cblValues) {
         if (data == null) {
             throw new IllegalArgumentException("Supplied input TimeServices is invalid: NULL");
         }

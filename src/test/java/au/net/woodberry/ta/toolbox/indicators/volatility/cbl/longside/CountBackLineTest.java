@@ -1,9 +1,11 @@
 package au.net.woodberry.ta.toolbox.indicators.volatility.cbl.longside;
 
 import eu.verdelhan.ta4j.TimeSeries;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 public class CountBackLineTest {
@@ -19,7 +21,7 @@ public class CountBackLineTest {
     }
 
     @Test
-    public void testGetValue() {
+    public void testGetValueTC1() {
         TimeSeries timeSeries = new TimeSeries(Utils.createTickData("/TEST_COUNT_BACK_LINE_TC1.stub"));
         CountBackLine cbl = new CountBackLine(timeSeries);
         assertNull(cbl.getValue(0));
@@ -87,4 +89,59 @@ public class CountBackLineTest {
         assertEquals(33.89, cbl.getValue(62).toDouble(), 0.01);
         assertEquals(32.88, cbl.getValue(63).toDouble(), 0.01);
     }
+
+    // This example will no test every point along the chart, just major areas, i.e. pivot points
+    @Test
+    public void testGetValueTC2() {
+        TimeSeries timeSeries = new TimeSeries(Utils.createTickData("/TEST_COUNT_BACK_LINE_TC2.stub", DateTimeFormat.forPattern("dd-MM-YYYY")));
+        CountBackLine cbl = new CountBackLine(timeSeries);
+
+        // Pivot point
+        assertNotNull(cbl.getValue(18));
+        assertEquals(5.47, cbl.getValue(18).toDouble(), 0.01);
+
+        // Reset CBL
+        assertNull(cbl.getValue(32));
+
+        // No CBL possible
+        assertNull(cbl.getValue(37));
+
+        // Pivot point
+        assertNotNull(cbl.getValue(44));
+        assertEquals(5.84, cbl.getValue(44).toDouble(), 0.01);
+
+        // Entry
+        assertNotNull(cbl.getValue(54));
+        assertEquals(5.84, cbl.getValue(54).toDouble(), 0.01);
+
+        // Reset CBL
+        assertNull(cbl.getValue(55));
+
+        // Pivot point
+        assertNotNull(cbl.getValue(68));
+        assertEquals(6.18, cbl.getValue(68).toDouble(), 0.01);
+    }
+
+    // This example will no test every point along the chart, just major areas, i.e. pivot points
+    @Test
+    public void testGetValueTC3() {
+        TimeSeries timeSeries = new TimeSeries(Utils.createTickData("/TEST_COUNT_BACK_LINE_TC3.stub", DateTimeFormat.forPattern("dd-MM-YYYY")));
+        CountBackLine cbl = new CountBackLine(timeSeries);
+
+        // Pivot point
+        assertNotNull(cbl.getValue(24));
+        assertEquals(4.21, cbl.getValue(24).toDouble(), 0.01);
+
+        // Reset CBL
+        assertNull(cbl.getValue(28));
+
+        // Pivot point
+        assertNotNull(cbl.getValue(43));
+        assertEquals(4.43, cbl.getValue(43).toDouble(), 0.01);
+
+        // Reset CBL
+        assertNotNull(cbl.getValue(46));
+        assertNull(cbl.getValue(47));
+    }
+
 }
