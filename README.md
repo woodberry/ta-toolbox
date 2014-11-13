@@ -1,4 +1,4 @@
 ta-toolbox
 ==================
 
-Technical Analysis Toolbox - A collection of  lesser known Technical Analysis Indicators
+Technical Analysis Toolbox - A collection of lesser known Technical Analysis Indicators
