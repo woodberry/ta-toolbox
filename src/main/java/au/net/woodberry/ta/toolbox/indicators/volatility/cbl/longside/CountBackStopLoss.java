@@ -13,8 +13,6 @@ public class CountBackStopLoss extends CachedIndicator<TADecimal> {
 
     private final int countBackSteps;
 
-    private final Tick tick;
-
     private final int tickIdx;
 
     private TADecimal stopLoss;
@@ -43,7 +41,6 @@ public class CountBackStopLoss extends CachedIndicator<TADecimal> {
         }
         this.data = data;
         this.countBackSteps = countBackSteps;
-        this.tick = tick;
         this.tickIdx = tickIdx;
         this.highestPrice = tick.getMaxPrice(); // Initially the tick's max price
     }
@@ -51,13 +48,13 @@ public class CountBackStopLoss extends CachedIndicator<TADecimal> {
     @Override
     protected TADecimal calculate(int i) {
         if (i == tickIdx || (i >= countBackSteps && data.getTick(i).getMaxPrice().isGreaterThan(highestPrice))) {
-            stopLoss = recalculateStopLoss(data, i, countBackSteps);
+            stopLoss = countBack(data, i, countBackSteps);
             highestPrice = data.getTick(i).getMaxPrice();
         }
         return stopLoss;
     }
 
-    private static TADecimal recalculateStopLoss(TimeSeries data, int i, int countBackSteps) {
+    private static TADecimal countBack(TimeSeries data, int i, int countBackSteps) {
         TimeSeries subSeries = data.subseries(data.getBegin(), i);
         TADecimal stopLoss = null;
         TADecimal lowest = subSeries.getTick(subSeries.getEnd()).getMinPrice();
