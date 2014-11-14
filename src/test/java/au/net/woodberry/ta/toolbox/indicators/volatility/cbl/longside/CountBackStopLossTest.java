@@ -31,7 +31,7 @@ public class CountBackStopLossTest {
 
     @Test
     public void testGetValue() {
-        TimeSeries data = new TimeSeries(Utils.createTickData("/TEST_COUNT_BACK_LINE_TC4.stub", DateTimeFormat.forPattern("dd-MM-YYYY")));
+        TimeSeries data = new TimeSeries(Utils.createTickData("/TEST_COUNT_BACK_LINE_TC3.stub", DateTimeFormat.forPattern("dd-MM-YYYY")));
         CountBackStopLoss cbsl = new CountBackStopLoss(data, data.getTick(4), 4);
 
         // Fine grain checks for each index
