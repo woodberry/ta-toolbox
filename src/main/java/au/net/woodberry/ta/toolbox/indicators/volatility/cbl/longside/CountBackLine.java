@@ -12,6 +12,10 @@ public class CountBackLine extends CachedIndicator<TADecimal> {
 
     private TADecimal countBackLine;
 
+    /**
+     * @param data TimeSeries data containing price ticker information
+     * @param tickIdx Index position within the time-series data that contains the lowest pivot point
+     */
     public CountBackLine(TimeSeries data, int tickIdx) {
         this(data, tickIdx, DEFAULT_COUNT_BACK_STEPS);
     }

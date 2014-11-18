@@ -1,11 +1,11 @@
 package au.net.woodberry.ta.toolbox.indicators.volatility.cbl.longside;
 
-import eu.verdelhan.ta4j.Tick;
+import au.net.woodberry.ta.toolbox.indicators.TestUtils;
 import eu.verdelhan.ta4j.TimeSeries;
-import org.joda.time.DateTime;
+import eu.verdelhan.ta4j.Tick;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.DateTime;
 import org.junit.Test;
-
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -31,7 +31,7 @@ public class CountBackStopLossTest {
 
     @Test
     public void testGetValue() {
-        TimeSeries data = new TimeSeries(Utils.createTickData("/TEST_COUNT_BACK_LINE_TC3.stub", DateTimeFormat.forPattern("dd-MM-YYYY")));
+        TimeSeries data = new TimeSeries(TestUtils.createTickData("/TEST_COUNT_BACK_LINE_TC3.stub", DateTimeFormat.forPattern("dd-MM-YYYY")));
         CountBackStopLoss cbsl = new CountBackStopLoss(data, data.getTick(4), 4);
 
         // Fine grain checks for each index
