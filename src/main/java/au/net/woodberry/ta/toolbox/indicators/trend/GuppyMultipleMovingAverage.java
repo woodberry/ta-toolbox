@@ -143,7 +143,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         public List<TADecimal> getValues() {
             List<TADecimal> values = new ArrayList<>();
             for (Period period : objectMap.keySet()) {
-                values.add(objectMap.get(period));
+                values.add(getValue(period));
             }
             return values;
         }
@@ -157,7 +157,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
             List<TADecimal> values = new ArrayList<>();
             for (Period period : objectMap.keySet()) {
                 if (period.getgroup().equals(group)) {
-                    values.add(objectMap.get(period));
+                    values.add(getValue(period));
                 }
             }
             return values;

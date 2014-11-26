@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestDataUtils {
+public class StubDataTestUtils {
 
-    private TestDataUtils() {}
+    private StubDataTestUtils() {}
 
     public static List<Tick> createTickData(String stubData) {
         return createTickData(stubData, null);
@@ -20,7 +20,7 @@ public class TestDataUtils {
 
     public static List<Tick> createTickData(String stubData, DateTimeFormatter dtf) {
         List<Tick> ticks = new ArrayList<>();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(TestDataUtils.class.getResourceAsStream(stubData)));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(StubDataTestUtils.class.getResourceAsStream(stubData)));
         String line;
         try {
             while ((line = bufferedReader.readLine()) != null) {
