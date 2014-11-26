@@ -1,8 +1,9 @@
 package au.net.woodberry.ta.toolbox.indicators.trend;
 
+import au.net.woodberry.ta.toolbox.enums.Group;
 import au.net.woodberry.ta.toolbox.indicators.StubDataTestUtils;
-import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.indicators.simple.ClosePriceIndicator;
+import eu.verdelhan.ta4j.TimeSeries;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,8 +51,8 @@ public class GuppyMultipleMovingAverageTest {
 
     private static void assertGuppyMultipleMovingAverage(GuppyMultipleMovingAverage.Object gmma, double... expectedValues) {
         assertEquals(12, gmma.getValues().size()); // 12 - One for each period
-        assertEquals(6, gmma.getValues(GuppyMultipleMovingAverage.Group.SHORTTERM).size());
-        assertEquals(6, gmma.getValues(GuppyMultipleMovingAverage.Group.LONGTERM).size());
+        assertEquals(6, gmma.getValues(Group.SHORTTERM).size());
+        assertEquals(6, gmma.getValues(Group.LONGTERM).size());
         assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.THREE), expectedValues[0]);
         assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.FIVE), expectedValues[1]);
         assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.EIGHT), expectedValues[2]);

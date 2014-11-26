@@ -1,5 +1,6 @@
 package au.net.woodberry.ta.toolbox.indicators.trend;
 
+import au.net.woodberry.ta.toolbox.enums.Group;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 import eu.verdelhan.ta4j.Indicator;
 import eu.verdelhan.ta4j.TADecimal;
@@ -30,20 +31,20 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
     public GuppyMultipleMovingAverage(Indicator<? extends TADecimal> indicator) {
 
         /* Short term MA's */
-        this.ema3 = new EMAIndicator(indicator, Period.THREE.getTimeframe());
-        this.ema5 = new EMAIndicator(indicator, Period.FIVE.getTimeframe());
-        this.ema8 = new EMAIndicator(indicator, Period.EIGHT.getTimeframe());
-        this.ema10 = new EMAIndicator(indicator, Period.TEN.getTimeframe());
-        this.ema12 = new EMAIndicator(indicator, Period.TWELVE.getTimeframe());
-        this.ema15 = new EMAIndicator(indicator, Period.FIFTEEN.getTimeframe());
+        this.ema3 = new EMAIndicator(indicator, Period.THREE.getTimeFrame());
+        this.ema5 = new EMAIndicator(indicator, Period.FIVE.getTimeFrame());
+        this.ema8 = new EMAIndicator(indicator, Period.EIGHT.getTimeFrame());
+        this.ema10 = new EMAIndicator(indicator, Period.TEN.getTimeFrame());
+        this.ema12 = new EMAIndicator(indicator, Period.TWELVE.getTimeFrame());
+        this.ema15 = new EMAIndicator(indicator, Period.FIFTEEN.getTimeFrame());
 
         /* Long term MA's */
-        this.ema30 = new EMAIndicator(indicator, Period.THIRTY.getTimeframe());
-        this.ema35 = new EMAIndicator(indicator, Period.THIRTYFIVE.getTimeframe());
-        this.ema40 = new EMAIndicator(indicator, Period.FORTY.getTimeframe());
-        this.ema45 = new EMAIndicator(indicator, Period.FORTYFIVE.getTimeframe());
-        this.ema50 = new EMAIndicator(indicator, Period.FIFTY.getTimeframe());
-        this.ema60 = new EMAIndicator(indicator, Period.SIXTY.getTimeframe());
+        this.ema30 = new EMAIndicator(indicator, Period.THIRTY.getTimeFrame());
+        this.ema35 = new EMAIndicator(indicator, Period.THIRTYFIVE.getTimeFrame());
+        this.ema40 = new EMAIndicator(indicator, Period.FORTY.getTimeFrame());
+        this.ema45 = new EMAIndicator(indicator, Period.FORTYFIVE.getTimeFrame());
+        this.ema50 = new EMAIndicator(indicator, Period.FIFTY.getTimeFrame());
+        this.ema60 = new EMAIndicator(indicator, Period.SIXTY.getTimeFrame());
     }
 
     @Override
@@ -69,14 +70,6 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         return object;
     }
 
-    /**
-     * The GMMA categorises two distinct regions, the short term and long term moving average groups
-     */
-    public enum Group {
-        SHORTTERM,
-        LONGTERM
-    }
-
     public enum Period {
 
         /* Short term MA's */
@@ -95,20 +88,20 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         FIFTY(50, Group.LONGTERM),
         SIXTY(60, Group.LONGTERM);
 
-        private final int timeframe;
+        private final int timeFrame;
         private final Group group;
 
-        Period(int timeframe, Group group) {
-            this.timeframe = timeframe;
+        Period(int timeFrame, Group group) {
+            this.timeFrame = timeFrame;
             this.group = group;
         }
 
-        public Group getgroup() {
+        public Group getGroup() {
             return group;
         }
 
-        public int getTimeframe() {
-            return timeframe;
+        public int getTimeFrame() {
+            return timeFrame;
         }
     }
 
@@ -156,7 +149,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         public List<TADecimal> getValues(Group group) {
             List<TADecimal> values = new ArrayList<>();
             for (Period period : objectMap.keySet()) {
-                if (period.getgroup().equals(group)) {
+                if (period.getGroup().equals(group)) {
                     values.add(getValue(period));
                 }
             }
