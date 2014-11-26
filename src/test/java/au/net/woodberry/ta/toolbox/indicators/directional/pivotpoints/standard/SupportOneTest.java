@@ -1,6 +1,6 @@
 package au.net.woodberry.ta.toolbox.indicators.directional.pivotpoints.standard;
 
-import au.net.woodberry.ta.toolbox.indicators.TestUtils;
+import au.net.woodberry.ta.toolbox.indicators.TestDataUtils;
 import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.TimeSeries;
 import org.junit.After;
@@ -55,9 +55,9 @@ public class SupportOneTest {
     @Test
     public void testGetValueTC1() {
         List<TimeSeries> data = Arrays.asList(
-                new TimeSeries(TestUtils.createTickData("/TEST_PIVOT_POINT_TC1A.stub")),
-                new TimeSeries(TestUtils.createTickData("/TEST_PIVOT_POINT_TC1B.stub")),
-                new TimeSeries(TestUtils.createTickData("/TEST_PIVOT_POINT_TC1C.stub"))
+                new TimeSeries(TestDataUtils.createTickData("/TEST_PIVOT_POINT_TC1A.stub")),
+                new TimeSeries(TestDataUtils.createTickData("/TEST_PIVOT_POINT_TC1B.stub")),
+                new TimeSeries(TestDataUtils.createTickData("/TEST_PIVOT_POINT_TC1C.stub"))
         );
         SupportOne supportOne = new SupportOne(data, pivotPoint);
         TADecimal pivotPointCalc = TADecimal.valueOf(5000);

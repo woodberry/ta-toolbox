@@ -1,6 +1,6 @@
 package au.net.woodberry.ta.toolbox.indicators.volatility.cbl.longside;
 
-import au.net.woodberry.ta.toolbox.indicators.TestUtils;
+import au.net.woodberry.ta.toolbox.indicators.TestDataUtils;
 import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.TimeSeries;
 import org.joda.time.DateTime;
@@ -27,7 +27,7 @@ public class CountBackLineTest {
 
     @Test
     public void testGetValueContainsCountBackLineTC1() {
-        TimeSeries data = new TimeSeries(TestUtils.createTickData("/TEST_COUNT_BACK_LINE_TC1.stub"));
+        TimeSeries data = new TimeSeries(TestDataUtils.createTickData("/TEST_COUNT_BACK_LINE_TC1.stub"));
         CountBackLine cbl = new CountBackLine(data, 12);
         for (int i = data.getBegin(); i <= 4; i++) {
             assertNull(cbl.getValue(i));
@@ -40,7 +40,7 @@ public class CountBackLineTest {
 
     @Test
     public void testGetValueDoesNotContainCountBackLineTC1() {
-        TimeSeries data = new TimeSeries(TestUtils.createTickData("/TEST_COUNT_BACK_LINE_TC1.stub"));
+        TimeSeries data = new TimeSeries(TestDataUtils.createTickData("/TEST_COUNT_BACK_LINE_TC1.stub"));
         CountBackLine cbl = new CountBackLine(data, 1, 3);
         for (int i = data.getBegin(); i <= data.getEnd(); i++) {
             assertNull(cbl.getValue(i));
@@ -49,7 +49,7 @@ public class CountBackLineTest {
 
     @Test
     public void testGetValueDoesNotContainCountBackLineTC2() {
-        TimeSeries data = new TimeSeries(TestUtils.createTickData("/TEST_COUNT_BACK_LINE_TC2.stub"));
+        TimeSeries data = new TimeSeries(TestDataUtils.createTickData("/TEST_COUNT_BACK_LINE_TC2.stub"));
         CountBackLine cbl = new CountBackLine(data, 17);
         for (int i = data.getBegin(); i <= data.getEnd(); i++) {
             assertNull(cbl.getValue(i));
