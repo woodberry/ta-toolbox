@@ -1,4 +1,4 @@
-package au.net.woodberry.ta.toolbox.indicators.volatility.cbl.longside;
+package au.net.woodberry.ta.toolbox.indicators.volatility.cbl;
 
 import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.TimeSeries;

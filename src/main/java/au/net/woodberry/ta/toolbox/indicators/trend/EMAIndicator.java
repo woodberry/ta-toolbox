@@ -11,9 +11,11 @@ class EMAIndicator extends CachedIndicator<TADecimal> {
     private final int timeFrame;
 
     /**
-     * A custom EMA indicator used for Trend-based indicators
+     * A custom EMA indicator used for Trend-based calculations
+     * eu.verdelhan.ta4j.indicators.trackers.EMAIndicator, this does not seed the initial EMA with an SMA value
+     * Instead, it uses the first value as supplied by the indicator used here.
      *
-     * @param indicator A simple indicator, normally a closing price indicator
+     * @param indicator An indicator, normally a closing price indicator
      * @param timeFrame An applied timeFrame to perform the EMA calculations
      */
     EMAIndicator(Indicator<? extends TADecimal> indicator, int timeFrame) {

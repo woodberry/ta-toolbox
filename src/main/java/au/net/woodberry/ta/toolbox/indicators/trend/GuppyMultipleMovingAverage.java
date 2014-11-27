@@ -30,6 +30,10 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
     // use the EMA for calculation
     public GuppyMultipleMovingAverage(Indicator<? extends TADecimal> indicator) {
 
+        if (indicator == null) {
+            throw new IllegalArgumentException("Supplied Indicator is invalid: NULL");
+        }
+
         /* Short term MA's */
         this.ema3 = new EMAIndicator(indicator, Period.THREE.getTimeFrame());
         this.ema5 = new EMAIndicator(indicator, Period.FIVE.getTimeFrame());

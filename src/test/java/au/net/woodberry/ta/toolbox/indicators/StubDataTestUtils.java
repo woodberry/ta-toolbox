@@ -25,6 +25,10 @@ public class StubDataTestUtils {
         try {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] data = line.split(",");
+                // Skip
+                if (data == null) {
+                    continue;
+                }
                 DateTime dt = dtf != null ? DateTime.parse(data[0], dtf) : DateTime.parse(data[0]);
                 Tick tick = new Tick(dt, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]),
                         Double.parseDouble(data[4]), Double.parseDouble(data[5]));

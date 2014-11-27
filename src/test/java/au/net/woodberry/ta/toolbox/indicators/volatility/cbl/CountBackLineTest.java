@@ -1,4 +1,4 @@
-package au.net.woodberry.ta.toolbox.indicators.volatility.cbl.longside;
+package au.net.woodberry.ta.toolbox.indicators.volatility.cbl;
 
 import au.net.woodberry.ta.toolbox.indicators.StubDataTestUtils;
 import eu.verdelhan.ta4j.Tick;

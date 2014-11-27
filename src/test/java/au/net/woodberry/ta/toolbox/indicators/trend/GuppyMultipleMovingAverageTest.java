@@ -12,11 +12,17 @@ import static org.junit.Assert.assertEquals;
 
 public class GuppyMultipleMovingAverageTest {
 
-    GuppyMultipleMovingAverage gmmaIndicator;
+    private GuppyMultipleMovingAverage gmmaIndicator;
+
     @Before
     public void before() {
         TimeSeries data = new TimeSeries(StubDataTestUtils.createTickData("/TEST_GUPPY_MULTIPLE_MOVING_AVERAGE_TC1.stub"));
         gmmaIndicator = new GuppyMultipleMovingAverage(new ClosePriceIndicator(data));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullIndicatorInput() {
+        gmmaIndicator = new GuppyMultipleMovingAverage(null);
     }
 
     @Test
