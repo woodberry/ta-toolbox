@@ -10,7 +10,7 @@
         <version>7</version>
     </parent>
 
-    <groupId>au.net.woodberry</groupId>
+    <groupId>au.net.woodberry.services</groupId>
     <artifactId>ta-toolbox</artifactId>
     <version>1.0.2-SNAPSHOT</version>
     <name>Technical Analysis :: Toolbox</name>
