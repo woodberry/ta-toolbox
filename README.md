@@ -1,10 +1,8 @@
-# ta-toolbox
-==================
+# ta-toolbox - Technical Analysis Toolbox
 
-Technical Analysis Toolbox - A collection of lesser known Technical Analysis
-Indicators
+A collection of lesser known Technical Analysis Indicators
 
-## Indicators:
+### Indicators:
 
 * Pivot Points - Standard
 * Count Back Line (CBL)
