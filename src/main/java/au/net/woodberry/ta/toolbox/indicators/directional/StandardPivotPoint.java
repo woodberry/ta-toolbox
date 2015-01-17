@@ -1,4 +1,4 @@
-package au.net.woodberry.ta.toolbox.indicators.directional.pivotpoints;
+package au.net.woodberry.ta.toolbox.indicators.directional;
 
 import eu.verdelhan.ta4j.TADecimal;
 

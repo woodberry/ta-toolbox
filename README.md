@@ -1,11 +1,13 @@
-ta-toolbox
+# ta-toolbox
 ==================
 
-Technical Analysis Toolbox - A collection of lesser known Technical Analysis Indicators
+Technical Analysis Toolbox - A collection of lesser known Technical Analysis
+Indicators
 
-Indicators:
+## Indicators:
 
-Count Back Line (CBL) - long side - buy low, sell high
-Pivot Point - Standard
+Pivot Points - Standard
+Count Back Line (CBL)
+Count Back Line Stoploss (CBL)
 Guppy Multiple Moving Average (GMMA)
 Trend Volitility Line (TVL)
