@@ -54,6 +54,26 @@ public class GuppyMultipleMovingAverageTest {
         double[] expectedValues = {7.556, 7.583, 7.5847, 7.573, 7.5561, 7.5261, 7.3509, 7.2902, 7.23, 7.1709, 7.1135, 7.0046};
         assertGuppyMultipleMovingAverage(gmmaIndicator.getValue(74), expectedValues);
     }
+    
+    @Test
+    public void testLowestOfShortTermGroup() {
+        assertEquals(GuppyMultipleMovingAverage.Period.FIFTEEN, gmmaIndicator.getValue(1).lowestOf(Group.SHORTTERM));
+    }
+    
+    @Test
+    public void testHighestOfShortTermGroup() {
+        assertEquals(GuppyMultipleMovingAverage.Period.THREE, gmmaIndicator.getValue(1).highestOf(Group.SHORTTERM));
+    }
+    
+    @Test
+    public void testLowestOfLongTermGroup() {
+        assertEquals(GuppyMultipleMovingAverage.Period.SIXTY, gmmaIndicator.getValue(1).lowestOf(Group.LONGTERM));
+    }
+    
+    @Test
+    public void testHighestOfLongTermGroup() {
+        assertEquals(GuppyMultipleMovingAverage.Period.THIRTY, gmmaIndicator.getValue(1).highestOf(Group.LONGTERM));
+    }
 
     private static void assertGuppyMultipleMovingAverage(GuppyMultipleMovingAverage.Object gmma, double... expectedValues) {
         assertEquals(12, gmma.getValues().size()); // 12 - One for each period

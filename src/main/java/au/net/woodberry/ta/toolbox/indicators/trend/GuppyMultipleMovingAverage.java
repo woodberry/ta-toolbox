@@ -132,6 +132,34 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
             }
             return objectMap.get(period);
         }
+        
+        public Period lowestOf(Group group) {
+            Period lowest = null;
+            TADecimal lowestValue = null;
+            for (Period period : objectMap.keySet()) {
+                if (period.getGroup().equals(group)) {
+                    if (lowest == null || objectMap.get(period).isLessThan(lowestValue)) {
+                        lowest = period;
+                        lowestValue = objectMap.get(period);
+                    }
+                }
+            }
+            return lowest;
+        }
+        
+        public Period highestOf(Group group) {
+            Period highest = null;
+            TADecimal highestValue = null;
+            for (Period period : objectMap.keySet()) {
+                if (period.getGroup().equals(group)) {
+                    if (highest == null || objectMap.get(period).isGreaterThan(highestValue)) {
+                        highest = period;
+                        highestValue = objectMap.get(period);
+                    }
+                }
+            }
+            return highest;
+        }
 
         /**
          *

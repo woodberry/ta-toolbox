@@ -14,7 +14,8 @@ public class CountBackLine extends CachedIndicator<TADecimal> {
 
     /**
      * @param data TimeSeries data containing price ticker information
-     * @param tickIdx Index position within the time-series data that contains the lowest pivot point
+     * @param tickIdx Index position within the time-series data that the CBL calculation should be calculated from. 
+     *                This is typically a pivot point value.
      */
     public CountBackLine(TimeSeries data, int tickIdx) {
         this(data, tickIdx, DEFAULT_COUNT_BACK_STEPS);
