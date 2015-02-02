@@ -1,5 +1,6 @@
 package au.net.woodberry.ta.toolbox.indicators.trend;
 
+import au.net.woodberry.ta.toolbox.enums.Group;
 import au.net.woodberry.ta.toolbox.enums.Sustainability;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 import eu.verdelhan.ta4j.TADecimal;
@@ -25,29 +26,28 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
     }
 
     @Override
-    protected TrendVolatilityLine.Object calculate(int i) {
+    public TrendVolatilityLine.Object calculate(int i) {
         GuppyMultipleMovingAverage.Object gmma = gmmaIndicator.calculate(i);
+        
+        // Only under certain conditions can the TVL sustainability be determined, those which cannot are considered unknown:
+        // The entire trend is beneath the entry, unknown
+        sustainability = Sustainability.UNKNOWN;
 
-        // Default: The entire trend is beneath the entry, unknown
-        if (gmma.getValue(GuppyMultipleMovingAverage.Period.THREE).isLessThan(entry)
-                && gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN).isLessThan(entry)
-                && gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY).isLessThan(entry)
-                && gmma.getValue(GuppyMultipleMovingAverage.Period.SIXTY).isLessThan(entry)
-                ) {
-            sustainability = Sustainability.UNKNOWN;
-        }
-        if (gmma.getValue(GuppyMultipleMovingAverage.Period.THREE).isGreaterThanOrEqual(entry)) {
-            sustainability = Sustainability.HOPE;
-        }
-        if (gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN).isGreaterThanOrEqual(entry)) {
-            sustainability = Sustainability.CONFIDENT;
-        }
-        if (gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY).isGreaterThanOrEqual(entry)) {
-            sustainability = Sustainability.CERTAINTY;
-        }
-        // Set a new TVL
-        if (gmma.getValue(GuppyMultipleMovingAverage.Period.SIXTY).isGreaterThanOrEqual(tvl)) {
-            tvl = gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY);
+        // In a long side, all the long term ema's must be below the short term ema's for the calculation to be determined
+        if (gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
+
+            if (gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY).isGreaterThanOrEqual(entry)) {
+                sustainability = Sustainability.CERTAINTY;
+            } else if (gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN).isGreaterThanOrEqual(entry)) {
+                sustainability = Sustainability.CONFIDENT;
+            } else if (gmma.getValue(GuppyMultipleMovingAverage.Period.THREE).isGreaterThanOrEqual(entry)) {
+                sustainability = Sustainability.HOPE;
+            }
+
+            // Set a new TVL
+            if (gmma.getValue(GuppyMultipleMovingAverage.Period.SIXTY).isGreaterThanOrEqual(tvl)) {
+                tvl = gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY);
+            }            
         }
         return new TrendVolatilityLine.Object(tvl, entry, sustainability);
     }

@@ -11,6 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StubDataTestUtils {
+    
+    private static final int COLUMN_COUNT = 7;
+    private static final int TIMESTAMP = 0;
+    private static final int OPEN = 1;
+    private static final int HIGH = 2;
+    private static final int LOW = 3;
+    private static final int CLOSE = 4;
+    private static final int VOLUME = 5;
 
     private StubDataTestUtils() {}
 
@@ -25,13 +33,12 @@ public class StubDataTestUtils {
         try {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] data = line.split(",");
-                // Skip
-                if (data == null) {
+                if (data == null || data.length != COLUMN_COUNT) {
                     continue;
                 }
-                DateTime dt = dtf != null ? DateTime.parse(data[0], dtf) : DateTime.parse(data[0]);
-                Tick tick = new Tick(dt, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]),
-                        Double.parseDouble(data[4]), Double.parseDouble(data[5]));
+                DateTime dt = dtf != null ? DateTime.parse(data[TIMESTAMP], dtf) : DateTime.parse(data[TIMESTAMP]);
+                Tick tick = new Tick(dt, Double.parseDouble(data[OPEN]), Double.parseDouble(data[HIGH]), Double.parseDouble(data[LOW]),
+                        Double.parseDouble(data[CLOSE]), Double.parseDouble(data[VOLUME]));
                 ticks.add(tick);
             }
             bufferedReader.close();

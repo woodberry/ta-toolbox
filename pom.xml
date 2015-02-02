@@ -11,7 +11,7 @@
 
     <groupId>au.net.woodberry.services</groupId>
     <artifactId>ta-toolbox</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.5-SNAPSHOT</version>
     <name>Technical Analysis :: Toolbox</name>
 
     <distributionManagement>
