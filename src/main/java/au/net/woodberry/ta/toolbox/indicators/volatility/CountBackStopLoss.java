@@ -58,21 +58,19 @@ public class CountBackStopLoss extends CachedIndicator<TADecimal> {
         TimeSeries subSeries = data.subseries(data.getBegin(), i);
         TADecimal stopLoss = null;
         TADecimal lowest = subSeries.getTick(subSeries.getEnd()).getMinPrice();
-        boolean foundStopLossIdx = false;
-        int stopLossIdx = 0;
+        Integer stopLossIdx = null;
         int stepBacks = 0;
         if (lowest != null) {
             for (int j = subSeries.getEnd(); j >= subSeries.getBegin(); j--) {
                 if (subSeries.getTick(j).getMinPrice().isLessThan(lowest)) {
                     lowest = subSeries.getTick(j).getMinPrice();
                     if (++stepBacks >= countBackSteps) { // Only look back a maximum of count back steps
-                        foundStopLossIdx = true;
                         stopLossIdx = j;
                         break;
                     }
                 }
             }
-            stopLoss = foundStopLossIdx ? subSeries.getTick(stopLossIdx).getMinPrice()
+            stopLoss = stopLossIdx != null ? subSeries.getTick(stopLossIdx).getMinPrice()
                     : null;
         }
         return stopLoss;
