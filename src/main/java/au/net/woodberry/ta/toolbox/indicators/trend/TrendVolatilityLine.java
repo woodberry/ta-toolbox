@@ -44,7 +44,7 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
 
         if (gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
             
-            if (sustainability.equals(Sustainability.UNKNOWN) && tvl.isGreaterThan(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN))) {
+            if (sustainability.equals(Sustainability.UNKNOWN) && tvl.isGreaterThanOrEqual(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN))) {
                 sustainability = Sustainability.HOPE;
             }
             if (sustainability.equals(Sustainability.HOPE) && tvl.isLessThanOrEqual(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN))) {
