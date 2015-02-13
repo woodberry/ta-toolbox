@@ -2,63 +2,73 @@ package au.net.woodberry.ta.toolbox.indicators.trend;
 
 import au.net.woodberry.ta.toolbox.enums.Group;
 import au.net.woodberry.ta.toolbox.enums.Sustainability;
-import eu.verdelhan.ta4j.indicators.CachedIndicator;
 import eu.verdelhan.ta4j.TADecimal;
+import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
 public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Object> {
 
     private final GuppyMultipleMovingAverage gmmaIndicator;
-    private final TADecimal entry;
+    private TADecimal entry;
     private TADecimal tvl;
     private Sustainability sustainability;
 
-    public TrendVolatilityLine(GuppyMultipleMovingAverage gmmaIndicator, TADecimal entry) {
+    /**
+     * Construct a Trend Volatility Line indicator
+     *
+     * @param gmmaIndicator - The TVL is a function of the gmma (trend) and not price. This gmma is used to calculate the TVL.
+     * @param index - The position within the time series data from which to start the calculation
+     * @param entry - A fixed value, this is typically an entry price
+     */
+    public TrendVolatilityLine(GuppyMultipleMovingAverage gmmaIndicator, int index, TADecimal entry) {
         if (gmmaIndicator == null) {
             throw new IllegalArgumentException("Supplied input GuppyMultipleMovingAverage is invalid: NULL");
         }
         if (entry == null) {
-            throw new IllegalArgumentException("Supplied input TADecimal (entry) is invalid: NULL");
+            throw new IllegalArgumentException("Supplied input TADecimal entry is invalid: NULL");
         }
         this.gmmaIndicator = gmmaIndicator;
         this.entry = entry;
-        this.tvl = entry;
-        this.sustainability = Sustainability.UNKNOWN;
+        TrendVolatilityLine.Object initial = calculate(index);
+        this.tvl = initial.getValue();
+        this.sustainability = initial.getSustainability();
+    }
+
+    public TrendVolatilityLine(GuppyMultipleMovingAverage gmmaIndicator, TADecimal entry) {
+        this(gmmaIndicator, 0, entry);
     }
 
     @Override
     public TrendVolatilityLine.Object calculate(int i) {
-        GuppyMultipleMovingAverage.Object gmma = gmmaIndicator.calculate(i);
         
-        // Only under certain conditions can the TVL sustainability be determined, those which cannot are considered unknown:
-        // The entire trend is beneath the entry, unknown
-        sustainability = Sustainability.UNKNOWN;
+        GuppyMultipleMovingAverage.Object gmma = gmmaIndicator.calculate(i);
 
-        // In a long side, all the long term ema's must be below the short term ema's for the calculation to be determined
         if (gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
-
-            if (gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY).isGreaterThanOrEqual(entry)) {
-                sustainability = Sustainability.CERTAINTY;
-            } else if (gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN).isGreaterThanOrEqual(entry)) {
-                sustainability = Sustainability.CONFIDENT;
-            } else if (gmma.getValue(GuppyMultipleMovingAverage.Period.THREE).isGreaterThanOrEqual(entry)) {
+            
+            if (sustainability.equals(Sustainability.UNKNOWN) && tvl.isGreaterThan(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN))) {
                 sustainability = Sustainability.HOPE;
             }
-
-            // Set a new TVL
-            if (gmma.getValue(GuppyMultipleMovingAverage.Period.SIXTY).isGreaterThanOrEqual(tvl)) {
+            if (sustainability.equals(Sustainability.HOPE) && tvl.isLessThanOrEqual(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN))) {
+                sustainability = Sustainability.CONFIDENT;
+            }
+            if (sustainability.equals(Sustainability.CONFIDENT) && tvl.isLessThanOrEqual(gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY))) {
+                sustainability = Sustainability.CERTAINTY;
+            }
+            if (sustainability.equals(Sustainability.CERTAINTY) && tvl.isLessThanOrEqual(gmma.getValue(GuppyMultipleMovingAverage.Period.SIXTY))) {
                 tvl = gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY);
-            }            
+            }
+        } else {
+            tvl = entry; // Reset any step ups in the tvl from a trend back to its original entry value.
+            sustainability = Sustainability.UNKNOWN;
         }
-        return new TrendVolatilityLine.Object(tvl, entry, sustainability);
+        return new TrendVolatilityLine.Object(tvl, sustainability);
     }
 
     public class Object {
 
         private final TADecimal value;
-
         private final Sustainability sustainability;
 
-        public Object(TADecimal value, TADecimal breakEvenLine, Sustainability sustainability) {
+        public Object(TADecimal value, Sustainability sustainability) {
             this.value = value;
             this.sustainability = sustainability;
         }
@@ -69,6 +79,24 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
 
         public TADecimal getValue() {
             return value;
+        }
+        
+        @Override
+        public boolean equals(java.lang.Object aThat) {
+            if ( this == aThat ) {
+                return true;
+            }
+            if (!(aThat instanceof TrendVolatilityLine.Object)) {
+                return false;
+            }
+            TrendVolatilityLine.Object that = (TrendVolatilityLine.Object)aThat;
+            return this.getSustainability().equals(that.getSustainability())
+                    && this.getValue().equals(that.getValue());
+        }
+        
+        @Override
+        public String toString() {
+            return "Value: " + value + " Sustainability: " + sustainability;
         }
     }
 }

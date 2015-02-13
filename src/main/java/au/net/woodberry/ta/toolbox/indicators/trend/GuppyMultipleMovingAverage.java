@@ -29,12 +29,12 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
 
     // use the EMA for calculation
     public GuppyMultipleMovingAverage(Indicator<? extends TADecimal> indicator) {
-
+        
         if (indicator == null) {
             throw new IllegalArgumentException("Supplied Indicator is invalid: NULL");
         }
-
-        /* Short term MA's */
+        
+        // Short term moving averages
         this.ema3 = new EMAIndicator(indicator, Period.THREE.getTimeFrame());
         this.ema5 = new EMAIndicator(indicator, Period.FIVE.getTimeFrame());
         this.ema8 = new EMAIndicator(indicator, Period.EIGHT.getTimeFrame());
@@ -42,7 +42,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         this.ema12 = new EMAIndicator(indicator, Period.TWELVE.getTimeFrame());
         this.ema15 = new EMAIndicator(indicator, Period.FIFTEEN.getTimeFrame());
 
-        /* Long term MA's */
+        // Long term moving averages
         this.ema30 = new EMAIndicator(indicator, Period.THIRTY.getTimeFrame());
         this.ema35 = new EMAIndicator(indicator, Period.THIRTYFIVE.getTimeFrame());
         this.ema40 = new EMAIndicator(indicator, Period.FORTY.getTimeFrame());
@@ -55,7 +55,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
     protected GuppyMultipleMovingAverage.Object calculate(int i) {
         GuppyMultipleMovingAverage.Object object = new GuppyMultipleMovingAverage.Object();
 
-        /* Short term MA's */
+        // Short term moving averages
         object.setValue(Period.THREE, ema3.getValue(i));
         object.setValue(Period.FIVE, ema5.getValue(i));
         object.setValue(Period.EIGHT, ema8.getValue(i));
@@ -63,7 +63,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         object.setValue(Period.TWELVE, ema12.getValue(i));
         object.setValue(Period.FIFTEEN, ema15.getValue(i));
 
-        /* Long term MA's */
+        // Long term moving averages
         object.setValue(Period.THIRTY, ema30.getValue(i));
         object.setValue(Period.THIRTYFIVE, ema35.getValue(i));
         object.setValue(Period.FORTY, ema40.getValue(i));
@@ -73,10 +73,10 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
 
         return object;
     }
-
+    
     public enum Period {
 
-        /* Short term MA's */
+        // Short term moving averages
         THREE(3, Group.SHORTTERM),
         FIVE(5, Group.SHORTTERM),
         EIGHT(8, Group.SHORTTERM),
@@ -84,7 +84,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         TWELVE(12, Group.SHORTTERM),
         FIFTEEN(15, Group.SHORTTERM),
 
-        /* Long term MA's */
+        // Long term moving averages
         THIRTY(30, Group.LONGTERM),
         THIRTYFIVE(35, Group.LONGTERM),
         FORTY(40, Group.LONGTERM),
@@ -109,10 +109,6 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         }
     }
 
-    /**
-     * Object abstraction of the GMMA underlying data store,
-     * so that consumers of the indicator do not have to work directly with the map
-     */
     public class Object {
 
         private Map<Period, TADecimal> objectMap = new HashMap<>(12);
@@ -122,7 +118,6 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         }
 
         /**
-         *
          * @param period A single period for the required value
          * @return A value for the specified period
          */
@@ -132,7 +127,11 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
             }
             return objectMap.get(period);
         }
-        
+
+        /**
+         * Determines the lowest value from a given group
+         * @param group - The group to determine the lowest value from
+         */
         public Period lowestOf(Group group) {
             Period lowest = null;
             TADecimal lowestValue = null;
@@ -146,7 +145,11 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
             }
             return lowest;
         }
-        
+
+        /**
+         * Determines the highest value from a given group
+         * @param group - The group to determine the highest value from
+         */
         public Period highestOf(Group group) {
             Period highest = null;
             TADecimal highestValue = null;
@@ -162,7 +165,6 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         }
 
         /**
-         *
          * @return All period values
          */
         public List<TADecimal> getValues() {
@@ -174,7 +176,6 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         }
 
         /**
-         *
          * @param group
          * @return A list of values within the specified group
          */
@@ -187,5 +188,23 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
             }
             return values;
         }
+        
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append(Period.THREE + ": " + objectMap.get(Period.THREE) + " ");
+            builder.append(Period.FIVE + ": " + objectMap.get(Period.FIVE) + " ");
+            builder.append(Period.EIGHT + ": " + objectMap.get(Period.EIGHT) + " ");
+            builder.append(Period.TEN + ": " + objectMap.get(Period.TEN) + " ");
+            builder.append(Period.TWELVE + ": " + objectMap.get(Period.TWELVE) + " ");
+            builder.append(Period.FIFTEEN + ": " + objectMap.get(Period.FIFTEEN) + " ");
+            builder.append(Period.THIRTY + ": " + objectMap.get(Period.THIRTY) + " ");
+            builder.append(Period.THIRTYFIVE + ": " + objectMap.get(Period.THIRTYFIVE) + " ");
+            builder.append(Period.FORTY + ": " + objectMap.get(Period.FORTY) + " ");
+            builder.append(Period.FORTYFIVE + ": " + objectMap.get(Period.FORTYFIVE) + " ");
+            builder.append(Period.FIFTY + ": " + objectMap.get(Period.FIFTY) + " ");
+            builder.append(Period.SIXTY + ": " + objectMap.get(Period.SIXTY) + " ");
+            return builder.toString();
+        } 
     }
 }
