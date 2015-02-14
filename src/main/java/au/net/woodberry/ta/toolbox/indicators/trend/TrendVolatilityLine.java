@@ -26,11 +26,9 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
         if (entry == null) {
             throw new IllegalArgumentException("Supplied input TADecimal entry is invalid: NULL");
         }
+        this.sustainability = Sustainability.UNKNOWN;
         this.gmmaIndicator = gmmaIndicator;
         this.entry = entry;
-        TrendVolatilityLine.Object initial = calculate(index);
-        this.tvl = initial.getValue();
-        this.sustainability = initial.getSustainability();
     }
 
     public TrendVolatilityLine(GuppyMultipleMovingAverage gmmaIndicator, TADecimal entry) {
