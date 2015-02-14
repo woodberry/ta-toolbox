@@ -41,8 +41,10 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
     public TrendVolatilityLine.Object calculate(int i) {
         
         GuppyMultipleMovingAverage.Object gmma = gmmaIndicator.calculate(i);
-
+        
         if (gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
+            
+            tvl = entry;
             
             if (sustainability.equals(Sustainability.UNKNOWN) && tvl.isGreaterThanOrEqual(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN))) {
                 sustainability = Sustainability.HOPE;
@@ -57,7 +59,7 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
                 tvl = gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY);
             }
         } else {
-            tvl = entry; // Reset any step ups in the tvl from a trend back to its original entry value.
+            tvl = null;
             sustainability = Sustainability.UNKNOWN;
         }
         return new TrendVolatilityLine.Object(tvl, sustainability);
