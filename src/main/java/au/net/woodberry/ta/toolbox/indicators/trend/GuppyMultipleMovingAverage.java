@@ -23,17 +23,15 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
     private final EMAIndicator ema45;
     private final EMAIndicator ema50;
     private final EMAIndicator ema60;
-
+    
     // Short term moving averages ... 3,5,8,10,12,15 periods
     // Long term moving averages ... 30,35,40,45,50,60 periods
 
-    // use the EMA for calculation
     public GuppyMultipleMovingAverage(Indicator<? extends TADecimal> indicator) {
         
         if (indicator == null) {
             throw new IllegalArgumentException("Supplied Indicator is invalid: NULL");
         }
-        
         // Short term moving averages
         this.ema3 = new EMAIndicator(indicator, Period.THREE.getTimeFrame());
         this.ema5 = new EMAIndicator(indicator, Period.FIVE.getTimeFrame());
@@ -56,20 +54,20 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         GuppyMultipleMovingAverage.Object object = new GuppyMultipleMovingAverage.Object();
 
         // Short term moving averages
-        object.setValue(Period.THREE, ema3.getValue(i));
-        object.setValue(Period.FIVE, ema5.getValue(i));
-        object.setValue(Period.EIGHT, ema8.getValue(i));
-        object.setValue(Period.TEN, ema10.getValue(i));
-        object.setValue(Period.TWELVE, ema12.getValue(i));
-        object.setValue(Period.FIFTEEN, ema15.getValue(i));
+        if (i > Period.THREE.getTimeFrame() - 1)      object.setValue(Period.THREE, ema3.getValue(i));
+        if (i > Period.FIVE.getTimeFrame() - 1)       object.setValue(Period.FIVE, ema5.getValue(i));
+        if (i > Period.EIGHT.getTimeFrame() - 1)      object.setValue(Period.EIGHT, ema8.getValue(i));
+        if (i > Period.TEN.getTimeFrame() - 1)        object.setValue(Period.TEN, ema10.getValue(i));
+        if (i > Period.TWELVE.getTimeFrame() - 1)     object.setValue(Period.TWELVE, ema12.getValue(i));
+        if (i > Period.FIFTEEN.getTimeFrame() - 1)    object.setValue(Period.FIFTEEN, ema15.getValue(i));
 
         // Long term moving averages
-        object.setValue(Period.THIRTY, ema30.getValue(i));
-        object.setValue(Period.THIRTYFIVE, ema35.getValue(i));
-        object.setValue(Period.FORTY, ema40.getValue(i));
-        object.setValue(Period.FORTYFIVE, ema45.getValue(i));
-        object.setValue(Period.FIFTY, ema50.getValue(i));
-        object.setValue(Period.SIXTY, ema60.getValue(i));
+        if (i > Period.THIRTY.getTimeFrame() - 1)     object.setValue(Period.THIRTY, ema30.getValue(i));
+        if (i > Period.THIRTYFIVE.getTimeFrame() - 1) object.setValue(Period.THIRTYFIVE, ema35.getValue(i));
+        if (i > Period.FORTY.getTimeFrame() - 1)      object.setValue(Period.FORTY, ema40.getValue(i));
+        if (i > Period.FORTYFIVE.getTimeFrame() - 1)  object.setValue(Period.FORTYFIVE, ema45.getValue(i));
+        if (i > Period.FIFTY.getTimeFrame() - 1)      object.setValue(Period.FIFTY, ema50.getValue(i));
+        if (i > Period.SIXTY.getTimeFrame() - 1)      object.setValue(Period.SIXTY, ema60.getValue(i));
 
         return object;
     }
@@ -110,8 +108,10 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
     }
 
     public class Object {
-
-        private Map<Period, TADecimal> objectMap = new HashMap<>(12);
+        
+        private static final int MAP_SIZE = 12;
+        
+        private Map<Period, TADecimal> objectMap = new HashMap<>(MAP_SIZE);
 
         public void setValue(Period period, TADecimal value) {
             objectMap.put(period, value);
@@ -131,6 +131,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         /**
          * Determines the lowest value from a given group
          * @param group - The group to determine the lowest value from
+         * @return The lowest period for the supplied group or null, if none could be determined
          */
         public Period lowestOf(Group group) {
             Period lowest = null;
@@ -149,6 +150,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
         /**
          * Determines the highest value from a given group
          * @param group - The group to determine the highest value from
+         * @return The highest period for the supplied group or null, if none could be determined              
          */
         public Period highestOf(Group group) {
             Period highest = null;
@@ -187,6 +189,27 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
                 }
             }
             return values;
+        }
+
+        /**
+         * A conveinence method that determines if this instance of the gmma is complete. A complete gmma object is one where
+         * all period values are non-null which, by definition is at least 60-periods of input data
+         *  
+         * @return Whether the gmma is complete. In most cases, only a complete gmma should be used
+         */
+        public boolean isComplete() {
+            return  objectMap.get(Period.SIXTY) != null &&
+                    objectMap.get(Period.FIFTY) != null &&
+                    objectMap.get(Period.FORTYFIVE) != null &&
+                    objectMap.get(Period.FORTY) != null &&
+                    objectMap.get(Period.THIRTYFIVE) != null &&
+                    objectMap.get(Period.THIRTY) != null &&
+                    objectMap.get(Period.FIFTEEN) != null &&
+                    objectMap.get(Period.TWELVE) != null &&
+                    objectMap.get(Period.TEN) != null &&
+                    objectMap.get(Period.EIGHT) != null &&
+                    objectMap.get(Period.FIFTY) != null &&
+                    objectMap.get(Period.THREE) != null;
         }
         
         @Override

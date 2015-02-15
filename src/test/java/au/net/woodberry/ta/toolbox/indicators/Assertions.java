@@ -22,15 +22,19 @@
  */
 package au.net.woodberry.ta.toolbox.indicators;
 
+import au.net.woodberry.ta.toolbox.indicators.trend.GuppyMultipleMovingAverage;
 import eu.verdelhan.ta4j.TADecimal;
 import org.assertj.core.data.Offset;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Utility class for {@code TADecimal} tests.
  */
-public class TADecimalTestsUtils {
+public class Assertions {
 
     /** Offset for double equality checking */
     public static final Offset<Double> TA_OFFSET = Offset.offset(0.0001);
@@ -42,7 +46,12 @@ public class TADecimalTestsUtils {
      * @throws AssertionError if the actual value is not equal to the given {@code String} representation
      */
     public static void assertDecimalEquals(TADecimal actual, String expected) {
-        assertThat(actual).isEqualTo(TADecimal.valueOf(expected));
+        if (expected != null) {
+            assertNotNull(actual);
+            assertThat(actual).isEqualTo(TADecimal.valueOf(expected));
+        } else {
+            assertNull(actual);
+        }
     }
 
     /**
@@ -51,8 +60,14 @@ public class TADecimalTestsUtils {
      * @param expected the given {@code Integer} representation to compare the actual value to
      * @throws AssertionError if the actual value is not equal to the given {@code Integer} representation
      */
-    public static void assertDecimalEquals(TADecimal actual, int expected) {
-        assertThat(actual).isEqualTo(TADecimal.valueOf(expected));
+    public static void assertDecimalEquals(TADecimal actual, Integer expected) {
+        if (expected != null) {
+            assertNotNull(actual);
+            assertThat(actual).isEqualTo(TADecimal.valueOf(expected));
+        } else {
+            assertNull(actual);
+        }
+        
     }
 
     /**
@@ -61,7 +76,28 @@ public class TADecimalTestsUtils {
      * @param expected the given {@code Double} representation to compare the actual value to
      * @throws AssertionError if the actual value is not equal to the given {@code Double} representation
      */
-    public static void assertDecimalEquals(TADecimal actual, double expected) {
-        assertThat(actual.toDouble()).isEqualTo(expected, TA_OFFSET);
+    public static void assertDecimalEquals(TADecimal actual, Double expected) {
+        if (expected != null) {
+            assertNotNull(actual);
+            assertThat(actual.toDouble()).isEqualTo(expected, TA_OFFSET);
+        } else {
+            assertNull(actual);
+        }
+    }
+
+    public static void assertGuppyMultipleMovingAverage(GuppyMultipleMovingAverage.Object gmma, boolean isComplete, Double... expectedValues) {
+        assertEquals(isComplete, gmma.isComplete());
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.THREE), expectedValues[0]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.FIVE), expectedValues[1]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.EIGHT), expectedValues[2]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.TEN), expectedValues[3]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.TWELVE), expectedValues[4]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN), expectedValues[5]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY), expectedValues[6]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTYFIVE), expectedValues[7]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.FORTY), expectedValues[8]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.FORTYFIVE), expectedValues[9]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTY), expectedValues[10]);
+        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverage.Period.SIXTY), expectedValues[11]);
     }
 }

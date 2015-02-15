@@ -15,7 +15,7 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
     /**
      * Construct a Trend Volatility Line indicator
      *
-     * @param gmmaIndicator - The TVL is a function of the gmma (trend) and not price. This gmma is used to calculate the TVL.
+     * @param gmmaIndicator - The TVL is a function of price volatility and not price directly. For this, a gmma is used to calculate the TVL.
      * @param index - The position within the time series data from which to start the calculation
      * @param entry - A fixed value, this is typically an entry price
      */
@@ -39,8 +39,8 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
     public TrendVolatilityLine.Object calculate(int i) {
         
         GuppyMultipleMovingAverage.Object gmma = gmmaIndicator.calculate(i);
-        
-        if (gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
+
+        if (gmma.isComplete() && gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
             
             tvl = entry;
             
