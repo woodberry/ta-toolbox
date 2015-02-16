@@ -15,7 +15,7 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
     /**
      * Construct a Trend Volatility Line indicator
      *
-     * @param gmmaIndicator - The TVL is a function of price volatility and not price directly. For this, a gmma is used to calculate the TVL.
+     * @param gmmaIndicator - The TVL is a function of price volatility and not price directly. For this,  gmma is used to calculate the TVL.
      * @param index - The position within the time series data from which to start the calculation
      * @param entry - A fixed value, this is typically an entry price
      */
@@ -41,9 +41,9 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
         GuppyMultipleMovingAverage.Object gmma = gmmaIndicator.calculate(i);
 
         if (gmma.isComplete() && gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
-            
+
             tvl = entry;
-            
+
             if (sustainability.equals(Sustainability.UNKNOWN) && tvl.isGreaterThanOrEqual(gmma.getValue(GuppyMultipleMovingAverage.Period.FIFTEEN))) {
                 sustainability = Sustainability.HOPE;
             }
@@ -57,7 +57,6 @@ public class TrendVolatilityLine extends CachedIndicator<TrendVolatilityLine.Obj
                 tvl = gmma.getValue(GuppyMultipleMovingAverage.Period.THIRTY);
             }
         } else {
-            tvl = null;
             sustainability = Sustainability.UNKNOWN;
         }
         return new TrendVolatilityLine.Object(tvl, sustainability);
