@@ -5,7 +5,7 @@ import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
-public class CountBackStopLoss extends CachedIndicator<TADecimal> {
+public class CountBackStopLossIndicator extends CachedIndicator<TADecimal> {
 
     private static final int DEFAULT_COUNT_BACK_STEPS = 2;
 
@@ -25,11 +25,11 @@ public class CountBackStopLoss extends CachedIndicator<TADecimal> {
      *             this is the entry bar
      * @param tickIdx The index that this tick exists within the time series data
      */
-    public CountBackStopLoss(TimeSeries data, Tick tick, int tickIdx) {
+    public CountBackStopLossIndicator(TimeSeries data, Tick tick, int tickIdx) {
         this(data, DEFAULT_COUNT_BACK_STEPS, tick, tickIdx);
     }
 
-    public CountBackStopLoss(TimeSeries data, int countBackSteps, Tick tick, int tickIdx) {
+    public CountBackStopLossIndicator(TimeSeries data, int countBackSteps, Tick tick, int tickIdx) {
         if (data == null) {
             throw new IllegalArgumentException("Supplied input TimeSeries is invalid: NULL");
         }

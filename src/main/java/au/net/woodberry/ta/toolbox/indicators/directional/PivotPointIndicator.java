@@ -3,7 +3,7 @@ package au.net.woodberry.ta.toolbox.indicators.directional;
 import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
-public abstract class PivotPoint extends CachedIndicator<TADecimal> {
+public abstract class PivotPointIndicator extends CachedIndicator<TADecimal> {
 
     private TADecimal value; // <- this is the pivot point value
     private TADecimal resistanceOne;

@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-public class TrendVolatilityLineTest {
+public class TrendVolatilityLineIndicatorTest {
     
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern("dd/MM/YY");
     private static final double DELTA = 0.0001;
@@ -22,21 +22,21 @@ public class TrendVolatilityLineTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void testNullGMMAIndicatorThrowsException() {
-        new TrendVolatilityLine(null, TADecimal.ONE);
+        new TrendVolatilityLineIndicator(null, TADecimal.ONE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullEntryValueThrowsException() {
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), null);
+        new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), null);
     }
     
     @Test
     public void testCalculateForFirstEntryTC1() {
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), entry);
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("1/3/12", DTF)));
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), entry);
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("1/3/12", DTF)));
         assertNull(tvl.getValue());
         assertEquals(Sustainability.UNKNOWN, tvl.getSustainability());
     }
@@ -45,9 +45,9 @@ public class TrendVolatilityLineTest {
     public void testCalculateWhenUnknownSustainabilityTurnsToHopeTC1() {
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), entry);
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), entry);
         
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("27/7/12", DTF)));
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("27/7/12", DTF)));
         assertNull(tvl.getValue());
         assertEquals(Sustainability.UNKNOWN, tvl.getSustainability());
 
@@ -61,9 +61,9 @@ public class TrendVolatilityLineTest {
     public void testCalculateWhenHopeSustainabilityTurnsToConfidentTC1() {
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), entry);
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), entry);
 
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("10/8/12", DTF)));
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("10/8/12", DTF)));
         assertNotNull(tvl.getValue());
         assertEquals(4245.7, tvl.getValue().toDouble(), DELTA);
         assertEquals(Sustainability.HOPE, tvl.getSustainability());
@@ -78,11 +78,11 @@ public class TrendVolatilityLineTest {
     public void testCalculateWhenConfidentSustainabilityTurnsToCertaintyTC1() {
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), entry);
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), entry);
 
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("10/8/12", DTF))); // Hope
 
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("20/8/12", DTF)));
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("20/8/12", DTF)));
         assertNotNull(tvl.getValue());
         assertEquals(4245.7, tvl.getValue().toDouble(), DELTA);
         assertEquals(Sustainability.CONFIDENT, tvl.getSustainability());
@@ -97,13 +97,13 @@ public class TrendVolatilityLineTest {
     public void testCalculateTVLValueUpdatesWhenTrendRisesWithinCertaintyTC1() {
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), entry);
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), entry);
 
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("10/8/12", DTF))); // Hope
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("20/8/12", DTF))); // Confident
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("21/8/12", DTF))); // Certainty
 
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("31/8/12", DTF)));
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("31/8/12", DTF)));
         assertNotNull(tvl.getValue());
         assertEquals(4245.7, tvl.getValue().toDouble(), DELTA);
         assertEquals(Sustainability.CERTAINTY, tvl.getSustainability());
@@ -118,12 +118,12 @@ public class TrendVolatilityLineTest {
     public void testCalculateWhenCertaintySustainabilityTurnsToUnknownTC1() {
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), entry);
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), entry);
 
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("10/8/12", DTF))); // Hope
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("20/8/12", DTF))); // Confident
 
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("9/11/12", DTF))); // Certainty
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("9/11/12", DTF))); // Certainty
         assertEquals(Sustainability.CERTAINTY, tvl.getSustainability());
 
         tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("12/11/12", DTF)));
@@ -137,12 +137,12 @@ public class TrendVolatilityLineTest {
 
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), entry);
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), entry);
 
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("10/8/12", DTF))); // Hope
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("20/8/12", DTF))); // Confident
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("9/11/12", DTF))); // Certainty
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("19/11/12", DTF))); // Unknown
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("19/11/12", DTF))); // Unknown
         assertEquals(Sustainability.UNKNOWN, tvl.getSustainability());
         assertNotNull(tvl.getValue());
         assertEquals(4471.8808, tvl.getValue().toDouble(), DELTA);
@@ -153,13 +153,13 @@ public class TrendVolatilityLineTest {
 
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), entry);
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), entry);
 
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("10/8/12", DTF))); // Hope
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("20/8/12", DTF))); // Confident
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("9/11/12", DTF))); // Certainty
         tvlIndicator.calculate(index(timeSeries, DateTime.parse("30/11/12", DTF))); // Unknown
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("3/12/12", DTF)));
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("3/12/12", DTF)));
         assertNotNull(tvl.getValue());
         assertEquals(entry.toDouble(), tvl.getValue().toDouble(), DELTA);
     }
@@ -169,9 +169,9 @@ public class TrendVolatilityLineTest {
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
         final int index = index(timeSeries, DateTime.parse("27/07/12", DTF));
-        TrendVolatilityLine tvlIndicator = new TrendVolatilityLine(new GuppyMultipleMovingAverage(new ClosePriceIndicator(timeSeries)), index, entry);
+        TrendVolatilityLineIndicator tvlIndicator = new TrendVolatilityLineIndicator(new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(timeSeries)), index, entry);
 
-        TrendVolatilityLine.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("30/7/12", DTF)));
+        TrendVolatilityLineIndicator.Object tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("30/7/12", DTF)));
         assertEquals(Sustainability.HOPE, tvl.getSustainability());
         tvl = tvlIndicator.calculate(index(timeSeries, DateTime.parse("13/8/12", DTF)));
         assertEquals(Sustainability.CONFIDENT, tvl.getSustainability());

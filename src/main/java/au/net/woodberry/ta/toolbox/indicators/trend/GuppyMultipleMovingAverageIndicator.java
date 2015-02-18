@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMovingAverage.Object> {
+public class GuppyMultipleMovingAverageIndicator extends CachedIndicator<GuppyMultipleMovingAverageIndicator.Object> {
 
     private final EMAIndicator ema3;
     private final EMAIndicator ema5;
@@ -27,7 +27,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
     // Short term moving averages ... 3,5,8,10,12,15 periods
     // Long term moving averages ... 30,35,40,45,50,60 periods
 
-    public GuppyMultipleMovingAverage(Indicator<? extends TADecimal> indicator) {
+    public GuppyMultipleMovingAverageIndicator(Indicator<? extends TADecimal> indicator) {
         
         if (indicator == null) {
             throw new IllegalArgumentException("Supplied Indicator is invalid: NULL");
@@ -50,8 +50,8 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
     }
 
     @Override
-    public GuppyMultipleMovingAverage.Object calculate(int i) {
-        GuppyMultipleMovingAverage.Object object = new GuppyMultipleMovingAverage.Object();
+    public GuppyMultipleMovingAverageIndicator.Object calculate(int i) {
+        GuppyMultipleMovingAverageIndicator.Object object = new GuppyMultipleMovingAverageIndicator.Object();
 
         // Short term moving averages
         if (i > Period.THREE.getTimeFrame() - 1)      object.setValue(Period.THREE, ema3.getValue(i));

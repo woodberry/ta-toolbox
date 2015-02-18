@@ -8,22 +8,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static au.net.woodberry.ta.toolbox.indicators.Assertions.assertGuppyMultipleMovingAverage;
-import static au.net.woodberry.ta.toolbox.indicators.trend.GuppyMultipleMovingAverage.Period;
+import static au.net.woodberry.ta.toolbox.indicators.trend.GuppyMultipleMovingAverageIndicator.Period;
 import static org.junit.Assert.assertEquals;
 
-public class GuppyMultipleMovingAverageTest {
+public class GuppyMultipleMovingAverageIndicatorTest {
 
-    private GuppyMultipleMovingAverage gmmaIndicator;
+    private GuppyMultipleMovingAverageIndicator gmmaIndicator;
 
     @Before
     public void before() {
         TimeSeries data = new TimeSeries(StubDataTestUtils.createTickData("/TEST_GUPPY_MULTIPLE_MOVING_AVERAGE_TC1.stub"));
-        gmmaIndicator = new GuppyMultipleMovingAverage(new ClosePriceIndicator(data));
+        gmmaIndicator = new GuppyMultipleMovingAverageIndicator(new ClosePriceIndicator(data));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullIndicatorInput() {
-        gmmaIndicator = new GuppyMultipleMovingAverage(null);
+        gmmaIndicator = new GuppyMultipleMovingAverageIndicator(null);
     }
 
     @Test

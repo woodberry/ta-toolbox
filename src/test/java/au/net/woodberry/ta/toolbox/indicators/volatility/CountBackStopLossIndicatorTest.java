@@ -12,27 +12,27 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-public class CountBackStopLossTest {
+public class CountBackStopLossIndicatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullData() {
-        new CountBackStopLoss(null, new Tick(DateTime.now(), DateTime.now()), 0);
+        new CountBackStopLossIndicator(null, new Tick(DateTime.now(), DateTime.now()), 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidCountBackSteps() {
-        new CountBackStopLoss(new TimeSeries(Arrays.asList(new Tick(DateTime.now(), DateTime.now()))), 0, new Tick(DateTime.now(), DateTime.now()), 0);
+        new CountBackStopLossIndicator(new TimeSeries(Arrays.asList(new Tick(DateTime.now(), DateTime.now()))), 0, new Tick(DateTime.now(), DateTime.now()), 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullTick() {
-        new CountBackStopLoss(new TimeSeries(Arrays.asList(new Tick(DateTime.now(), DateTime.now()))), null, 0);
+        new CountBackStopLossIndicator(new TimeSeries(Arrays.asList(new Tick(DateTime.now(), DateTime.now()))), null, 0);
     }
 
     @Test
     public void testGetValue() {
         TimeSeries data = new TimeSeries(StubDataTestUtils.createTickData("/TEST_COUNT_BACK_LINE_TC3.stub", DateTimeFormat.forPattern("dd-MM-YYYY")));
-        CountBackStopLoss cbsl = new CountBackStopLoss(data, data.getTick(4), 4);
+        CountBackStopLossIndicator cbsl = new CountBackStopLossIndicator(data, data.getTick(4), 4);
 
         // Fine grain checks for each index
         assertNull(cbsl.getValue(0));

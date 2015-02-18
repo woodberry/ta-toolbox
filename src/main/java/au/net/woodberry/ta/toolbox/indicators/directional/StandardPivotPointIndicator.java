@@ -2,7 +2,7 @@ package au.net.woodberry.ta.toolbox.indicators.directional;
 
 import eu.verdelhan.ta4j.TADecimal;
 
-public class StandardPivotPoint extends PivotPoint {
+public class StandardPivotPointIndicator extends PivotPointIndicator {
 
     /**
      * Reference: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:pivot_points
@@ -11,7 +11,7 @@ public class StandardPivotPoint extends PivotPoint {
      * @param prevLow - The previous period's low value
      * @param prevClose - The previous period's close value
      */
-    public StandardPivotPoint(TADecimal prevHigh, TADecimal prevLow, TADecimal prevClose) {
+    public StandardPivotPointIndicator(TADecimal prevHigh, TADecimal prevLow, TADecimal prevClose) {
         if (prevHigh == null) {
             throw new IllegalArgumentException("Supplied TADecimal (previous high) is invalid: NULL");
         }

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-public class StandardPivotPointTest {
+public class StandardPivotPointIndicatorTest {
 
     private static final double PREVIOUS_HIGH = 5367.8;
     private static final double PREVIOUS_LOW = 4308.4;
@@ -16,11 +16,11 @@ public class StandardPivotPointTest {
     private static final double PIVOT_POINT_VALUE = (PREVIOUS_HIGH + PREVIOUS_LOW + PREVIOUS_CLOSE) / 3;
     private static final double DELTA = 0.01;
 
-    private StandardPivotPoint standardPivotPoint;
+    private StandardPivotPointIndicator standardPivotPoint;
 
     @Before
     public void before() {
-        standardPivotPoint = new StandardPivotPoint(TADecimal.valueOf(PREVIOUS_HIGH), TADecimal.valueOf(PREVIOUS_LOW), TADecimal.valueOf(PREVIOUS_CLOSE));
+        standardPivotPoint = new StandardPivotPointIndicator(TADecimal.valueOf(PREVIOUS_HIGH), TADecimal.valueOf(PREVIOUS_LOW), TADecimal.valueOf(PREVIOUS_CLOSE));
     }
     @Test
     public void testPivotPoint() {

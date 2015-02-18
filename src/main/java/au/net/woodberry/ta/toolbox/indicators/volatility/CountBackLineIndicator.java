@@ -4,7 +4,7 @@ import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
-public class CountBackLine extends CachedIndicator<TADecimal> {
+public class CountBackLineIndicator extends CachedIndicator<TADecimal> {
 
     private static final int DEFAULT_COUNT_BACK_STEPS = 2;
 
@@ -17,7 +17,7 @@ public class CountBackLine extends CachedIndicator<TADecimal> {
      * @param tickIdx Index position within the time-series data that the CBL calculation should be calculated from. 
      *                This is typically a pivot point value.
      */
-    public CountBackLine(TimeSeries data, int tickIdx) {
+    public CountBackLineIndicator(TimeSeries data, int tickIdx) {
         this(data, tickIdx, DEFAULT_COUNT_BACK_STEPS);
     }
 
@@ -26,7 +26,7 @@ public class CountBackLine extends CachedIndicator<TADecimal> {
      * @param pivotPtIdx Index position within the time-series data that contains the lowest pivot point
      * @param countBackSteps Number of steps to count back by
      */
-    public CountBackLine(TimeSeries data, int pivotPtIdx, int countBackSteps) {
+    public CountBackLineIndicator(TimeSeries data, int pivotPtIdx, int countBackSteps) {
         if (data == null) {
             throw new IllegalArgumentException("Supplied input TimeSeries is invalid: NULL");
         }
