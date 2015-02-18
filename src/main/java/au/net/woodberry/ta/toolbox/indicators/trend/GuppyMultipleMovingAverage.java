@@ -50,7 +50,7 @@ public class GuppyMultipleMovingAverage extends CachedIndicator<GuppyMultipleMov
     }
 
     @Override
-    protected GuppyMultipleMovingAverage.Object calculate(int i) {
+    public GuppyMultipleMovingAverage.Object calculate(int i) {
         GuppyMultipleMovingAverage.Object object = new GuppyMultipleMovingAverage.Object();
 
         // Short term moving averages
