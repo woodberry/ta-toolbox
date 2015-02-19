@@ -22,7 +22,7 @@ public class MarketCapitalizationIndicatorTest {
         MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
         TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
         assertDecimalEquals(marketCap, 300000000000.0);
-        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.MEGA_CAP));
+        assertTrue(MarketCapitalization.valueOf(marketCap).equals(MarketCapitalization.MEGA_CAP));
     }
     
     @Test
@@ -32,7 +32,7 @@ public class MarketCapitalizationIndicatorTest {
         MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
         TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
         assertDecimalEquals(marketCap, 10000000000.0);
-        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.LARGE_CAP));
+        assertTrue(MarketCapitalization.valueOf(marketCap).equals(MarketCapitalization.LARGE_CAP));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class MarketCapitalizationIndicatorTest {
         MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
         TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
         assertDecimalEquals(marketCap, 2000000000.0);
-        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.MID_CAP));
+        assertTrue(MarketCapitalization.valueOf(marketCap).equals(MarketCapitalization.MID_CAP));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class MarketCapitalizationIndicatorTest {
         MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
         TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
         assertDecimalEquals(marketCap, 300000000.0);
-        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.SMALL_CAP));
+        assertTrue(MarketCapitalization.valueOf(marketCap).equals(MarketCapitalization.SMALL_CAP));
     }
     
     @Test
@@ -62,7 +62,7 @@ public class MarketCapitalizationIndicatorTest {
         MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
         TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
         assertDecimalEquals(marketCap, 50000000.0);
-        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.MICRO_CAP));
+        assertTrue(MarketCapitalization.valueOf(marketCap).equals(MarketCapitalization.MICRO_CAP));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class MarketCapitalizationIndicatorTest {
         MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
         TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
         assertDecimalEquals(marketCap, 49999999.0);
-        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.NANO_CAP));
+        assertTrue(MarketCapitalization.valueOf(marketCap).equals(MarketCapitalization.NANO_CAP));
     }
     
     @Test
@@ -82,6 +82,6 @@ public class MarketCapitalizationIndicatorTest {
         MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
         TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
         assertDecimalEquals(marketCap, 0.0);
-        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.UNKNOWN));
+        assertTrue(MarketCapitalization.valueOf(marketCap).equals(MarketCapitalization.UNKNOWN));
     }
 }

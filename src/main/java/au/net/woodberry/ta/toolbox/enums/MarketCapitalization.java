@@ -20,7 +20,7 @@ public enum MarketCapitalization {
     private static final TADecimal SMALL_CAP_MINIMUM = TADecimal.valueOf(300000000.0);
     private static final TADecimal MICRO_CAP_MINIMUM = TADecimal.valueOf(50000000.0);
     
-    public static MarketCapitalization getCapitalization(TADecimal value) {
+    public static MarketCapitalization valueOf(TADecimal value) {
         if (value == null || value.isEqual(TADecimal.ZERO)) {
             return UNKNOWN;
         } else if (value.isGreaterThanOrEqual(MEGA_CAP_MINIMUM)) {
