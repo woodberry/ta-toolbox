@@ -14,6 +14,16 @@ import static au.net.woodberry.ta.toolbox.indicators.Assertions.assertDecimalEqu
 import static org.junit.Assert.assertTrue;
 
 public class MarketCapitalizationIndicatorTest {
+
+    @Test
+    public void testMegaMarketCapitalization() {
+        List<Tick> ticks = Arrays.asList(new Tick(DateTime.parse("2001-01-01"),1,1,1,1.5,200000000000.0));
+        TimeSeries timeSeries = new TimeSeries(ticks);
+        MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
+        TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
+        assertDecimalEquals(marketCap, 300000000000.0);
+        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.MEGA_CAP));
+    }
     
     @Test
     public void testLargeMarketCapitalization() {
@@ -37,14 +47,34 @@ public class MarketCapitalizationIndicatorTest {
 
     @Test
     public void testSmallMarketCapitalization() {
-        List<Tick> ticks = Arrays.asList(new Tick(DateTime.parse("2001-01-01"),1,1,1,4,40000000.0));
+        List<Tick> ticks = Arrays.asList(new Tick(DateTime.parse("2001-01-01"),1,1,1,1,300000000.0));
         TimeSeries timeSeries = new TimeSeries(ticks);
         MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
         TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
-        assertDecimalEquals(marketCap, 160000000.0);
+        assertDecimalEquals(marketCap, 300000000.0);
         assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.SMALL_CAP));
     }
+    
+    @Test
+    public void testMicroMarketCapitalization() {
+        List<Tick> ticks = Arrays.asList(new Tick(DateTime.parse("2001-01-01"),1,1,1,1,50000000.0));
+        TimeSeries timeSeries = new TimeSeries(ticks);
+        MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
+        TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
+        assertDecimalEquals(marketCap, 50000000.0);
+        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.MICRO_CAP));
+    }
 
+    @Test
+    public void testNanoMarketCapitalization() {
+        List<Tick> ticks = Arrays.asList(new Tick(DateTime.parse("2001-01-01"),1,1,1,1,49999999.0));
+        TimeSeries timeSeries = new TimeSeries(ticks);
+        MarketCapitalizationIndicator marketCapitalizationIndicator = new MarketCapitalizationIndicator(timeSeries);
+        TADecimal marketCap = marketCapitalizationIndicator.getValue(0);
+        assertDecimalEquals(marketCap, 49999999.0);
+        assertTrue(MarketCapitalization.getCapitalization(marketCap).equals(MarketCapitalization.NANO_CAP));
+    }
+    
     @Test
     public void testUnknownMarketCapitalization() {
         List<Tick> ticks = Arrays.asList(new Tick(DateTime.parse("2001-01-01"),1,1,1,1,0.0));
