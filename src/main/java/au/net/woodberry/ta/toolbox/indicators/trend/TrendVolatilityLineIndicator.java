@@ -3,7 +3,7 @@ package au.net.woodberry.ta.toolbox.indicators.trend;
 import au.net.woodberry.ta.toolbox.enums.Group;
 import au.net.woodberry.ta.toolbox.enums.Period;
 import au.net.woodberry.ta.toolbox.enums.Sustainability;
-import au.net.woodberry.ta.toolbox.object.GuppyMultipleMovingAverage;
+import au.net.woodberry.ta.toolbox.object.MultipleMovingAverage;
 import au.net.woodberry.ta.toolbox.object.TrendVolatilityLine;
 import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
@@ -41,7 +41,7 @@ public class TrendVolatilityLineIndicator extends CachedIndicator<TrendVolatilit
     @Override
     public TrendVolatilityLine calculate(int i) {
         
-        GuppyMultipleMovingAverage gmma = gmmaIndicator.calculate(i);
+        MultipleMovingAverage gmma = gmmaIndicator.calculate(i);
 
         if (gmma.isComplete() && gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
 

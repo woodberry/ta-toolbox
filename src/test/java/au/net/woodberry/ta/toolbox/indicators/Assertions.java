@@ -23,7 +23,7 @@
 package au.net.woodberry.ta.toolbox.indicators;
 
 import au.net.woodberry.ta.toolbox.enums.Period;
-import au.net.woodberry.ta.toolbox.object.GuppyMultipleMovingAverage;
+import au.net.woodberry.ta.toolbox.object.MultipleMovingAverage;
 import eu.verdelhan.ta4j.TADecimal;
 import org.assertj.core.data.Offset;
 
@@ -86,7 +86,7 @@ public class Assertions {
         }
     }
 
-    public static void assertGuppyMultipleMovingAverage(GuppyMultipleMovingAverage gmma, boolean isComplete, Double... expectedValues) {
+    public static void assertGuppyMultipleMovingAverage(MultipleMovingAverage gmma, boolean isComplete, Double... expectedValues) {
         assertEquals(isComplete, gmma.isComplete());
         assertDecimalEquals(gmma.getValue(Period.THREE), expectedValues[0]);
         assertDecimalEquals(gmma.getValue(Period.FIVE), expectedValues[1]);
@@ -100,5 +100,21 @@ public class Assertions {
         assertDecimalEquals(gmma.getValue(Period.FORTYFIVE), expectedValues[9]);
         assertDecimalEquals(gmma.getValue(Period.FIFTY), expectedValues[10]);
         assertDecimalEquals(gmma.getValue(Period.SIXTY), expectedValues[11]);
+    }
+
+    public static void assertHullMultipleMovingAverage(MultipleMovingAverage hmma, boolean isComplete, Double... expectedValues) {
+        assertEquals(isComplete, hmma.isComplete());
+        assertDecimalEquals(hmma.getValue(Period.THREE), expectedValues[0]);
+        assertDecimalEquals(hmma.getValue(Period.FIVE), expectedValues[1]);
+        assertDecimalEquals(hmma.getValue(Period.SEVEN), expectedValues[2]);
+        assertDecimalEquals(hmma.getValue(Period.NINE), expectedValues[3]);
+        assertDecimalEquals(hmma.getValue(Period.ELEVEN), expectedValues[4]);
+        assertDecimalEquals(hmma.getValue(Period.THIRTEEN), expectedValues[5]);
+        assertDecimalEquals(hmma.getValue(Period.TWENTYONE), expectedValues[6]);
+        assertDecimalEquals(hmma.getValue(Period.TWENTYFOUR), expectedValues[7]);
+        assertDecimalEquals(hmma.getValue(Period.TWENTYSEVEN), expectedValues[8]);
+        assertDecimalEquals(hmma.getValue(Period.THIRTY), expectedValues[9]);
+        assertDecimalEquals(hmma.getValue(Period.THIRTYTHREE), expectedValues[10]);
+        assertDecimalEquals(hmma.getValue(Period.THIRTYSIX), expectedValues[11]);
     }
 }

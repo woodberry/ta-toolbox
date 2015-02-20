@@ -23,7 +23,7 @@ public class GuppyMultipleMovingAverageIndicatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullIndicatorInput() {
-        gmmaIndicator = new GuppyMultipleMovingAverageIndicator(null);
+        new GuppyMultipleMovingAverageIndicator(null);
     }
 
     @Test

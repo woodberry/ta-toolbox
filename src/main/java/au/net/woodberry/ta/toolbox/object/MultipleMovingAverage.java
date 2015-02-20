@@ -5,15 +5,15 @@ import au.net.woodberry.ta.toolbox.enums.Period;
 import eu.verdelhan.ta4j.TADecimal;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GuppyMultipleMovingAverage {
+public class MultipleMovingAverage {
 
     private static final int MAP_SIZE = 12;
 
-    private Map<Period, TADecimal> objectMap = new HashMap<>(MAP_SIZE);
+    private Map<Period, TADecimal> objectMap = new LinkedHashMap<>(MAP_SIZE);
 
     public void setValue(Period period, TADecimal value) {
         objectMap.put(period, value);
@@ -94,41 +94,27 @@ public class GuppyMultipleMovingAverage {
     }
 
     /**
-     * A conveinence method that determines if this instance of the gmma is complete. A complete gmma object is one where
-     * all period values are non-null which, by definition is at least 60-periods of input data
+     * A conveinence method that determines if this instance of the mma is complete. A complete mma object is one where
+     * all period values are non-null which, by definition is at least n-samples of input data, where n is the largest period
      *
-     * @return Whether the gmma is complete. In most cases, only a complete gmma should be used
+     * @return Whether the mma is complete. In most cases, only a complete mma should be used
      */
     public boolean isComplete() {
-        return  objectMap.get(Period.SIXTY) != null &&
-                objectMap.get(Period.FIFTY) != null &&
-                objectMap.get(Period.FORTYFIVE) != null &&
-                objectMap.get(Period.FORTY) != null &&
-                objectMap.get(Period.THIRTYFIVE) != null &&
-                objectMap.get(Period.THIRTY) != null &&
-                objectMap.get(Period.FIFTEEN) != null &&
-                objectMap.get(Period.TWELVE) != null &&
-                objectMap.get(Period.TEN) != null &&
-                objectMap.get(Period.EIGHT) != null &&
-                objectMap.get(Period.FIFTY) != null &&
-                objectMap.get(Period.THREE) != null;
+        // Ensure values defined for a period are not null and that the total map size is expected
+        for (Period period : objectMap.keySet()) {
+            if (objectMap.get(period) == null) {
+                return false;
+            }
+        }
+        return objectMap.size() == MAP_SIZE;
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(Period.THREE + ": " + objectMap.get(Period.THREE) + " ");
-        builder.append(Period.FIVE + ": " + objectMap.get(Period.FIVE) + " ");
-        builder.append(Period.EIGHT + ": " + objectMap.get(Period.EIGHT) + " ");
-        builder.append(Period.TEN + ": " + objectMap.get(Period.TEN) + " ");
-        builder.append(Period.TWELVE + ": " + objectMap.get(Period.TWELVE) + " ");
-        builder.append(Period.FIFTEEN + ": " + objectMap.get(Period.FIFTEEN) + " ");
-        builder.append(Period.THIRTY + ": " + objectMap.get(Period.THIRTY) + " ");
-        builder.append(Period.THIRTYFIVE + ": " + objectMap.get(Period.THIRTYFIVE) + " ");
-        builder.append(Period.FORTY + ": " + objectMap.get(Period.FORTY) + " ");
-        builder.append(Period.FORTYFIVE + ": " + objectMap.get(Period.FORTYFIVE) + " ");
-        builder.append(Period.FIFTY + ": " + objectMap.get(Period.FIFTY) + " ");
-        builder.append(Period.SIXTY + ": " + objectMap.get(Period.SIXTY) + " ");
+        for (Period period : objectMap.keySet()) {
+            builder.append(period + ": " + objectMap.get(period) + " ");
+        }
         return builder.toString();
     }
 }

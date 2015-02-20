@@ -22,7 +22,7 @@ public class RateOfReturnIndicator extends CachedIndicator<TADecimal> {
      * Perform a rate of return calculation
      *
      * @param priceIndicator An indicator based on the price information
-     * @param referenceIndicator Any indicator which is can perform the calculation such as a EMA, Average True Range, Linear regression
+     * @param referenceIndicator Any indicator, ideally one which smooths the price information such as a Moving average, Average True Range, Linear regression
      * @param referencePoint A reference point within the time series, default is the start index
      */
     public RateOfReturnIndicator(Indicator<? extends TADecimal> priceIndicator, Indicator<? extends TADecimal> referenceIndicator, int referencePoint) {

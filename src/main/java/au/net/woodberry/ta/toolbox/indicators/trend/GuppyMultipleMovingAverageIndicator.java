@@ -1,12 +1,12 @@
 package au.net.woodberry.ta.toolbox.indicators.trend;
 
 import au.net.woodberry.ta.toolbox.enums.Period;
-import au.net.woodberry.ta.toolbox.object.GuppyMultipleMovingAverage;
+import au.net.woodberry.ta.toolbox.object.MultipleMovingAverage;
 import eu.verdelhan.ta4j.Indicator;
 import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
-public class GuppyMultipleMovingAverageIndicator extends CachedIndicator<GuppyMultipleMovingAverage> {
+public class GuppyMultipleMovingAverageIndicator extends CachedIndicator<MultipleMovingAverage> {
 
     private final EMAIndicator ema3;
     private final EMAIndicator ema5;
@@ -47,8 +47,8 @@ public class GuppyMultipleMovingAverageIndicator extends CachedIndicator<GuppyMu
     }
 
     @Override
-    public GuppyMultipleMovingAverage calculate(int index) {
-        GuppyMultipleMovingAverage gmma = new GuppyMultipleMovingAverage();
+    public MultipleMovingAverage calculate(int index) {
+        MultipleMovingAverage gmma = new MultipleMovingAverage();
 
         // Short term moving averages
         if (index > Period.THREE.getTimeFrame() - 1)      gmma.setValue(Period.THREE, ema3.getValue(index));
