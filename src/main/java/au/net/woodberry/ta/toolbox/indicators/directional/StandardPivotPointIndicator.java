@@ -1,9 +1,18 @@
 package au.net.woodberry.ta.toolbox.indicators.directional;
 
+import au.net.woodberry.ta.toolbox.object.PivotPoint;
 import eu.verdelhan.ta4j.TADecimal;
+import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
-public class StandardPivotPointIndicator extends PivotPointIndicator {
+public class StandardPivotPointIndicator extends CachedIndicator<PivotPoint> {
 
+    private final PivotPoint result;
+    private TADecimal pivotPoint;
+    private TADecimal resistanceOne;
+    private TADecimal resistanceTwo;
+    private TADecimal supportOne;
+    private TADecimal supportTwo;
+    
     /**
      * Reference: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:pivot_points
      *
@@ -21,21 +30,23 @@ public class StandardPivotPointIndicator extends PivotPointIndicator {
         if (prevClose == null) {
             throw new IllegalArgumentException("Supplied TADecimal (previous close) is invalid: NULL");
         }
-        TADecimal pp = prevHigh.plus(prevLow).plus(prevClose).dividedBy(TADecimal.THREE);
-        TADecimal r1 = (pp.multipliedBy(TADecimal.TWO)).minus(prevLow);
-        TADecimal r2 = pp.plus((prevHigh.minus(prevLow)));
-        TADecimal s1 = (pp.multipliedBy(TADecimal.TWO)).minus(prevHigh);
-        TADecimal s2 = pp.minus((prevHigh.minus(prevLow)));
-        super.setValue(pp);
-        super.setResistanceOne(r1);
-        super.setResistanceTwo(r2);
-        super.setSupportOne(s1);
-        super.setSupportTwo(s2);
+        this.pivotPoint = prevHigh.plus(prevLow).plus(prevClose).dividedBy(TADecimal.THREE);
+        this.resistanceOne = (pivotPoint.multipliedBy(TADecimal.TWO)).minus(prevLow);
+        this.resistanceTwo = pivotPoint.plus((prevHigh.minus(prevLow)));
+        this.supportOne = (pivotPoint.multipliedBy(TADecimal.TWO)).minus(prevHigh);
+        this.supportTwo = pivotPoint.minus((prevHigh.minus(prevLow)));
+
+        this.result = new PivotPoint();
+        result.setPivotPoint(pivotPoint);
+        result.setResistanceOne(resistanceOne);
+        result.setResistanceTwo(resistanceTwo);
+        result.setSupportOne(supportOne);
+        result.setSupportTwo(supportTwo);
     }
 
     @Override
-    protected TADecimal calculate(int i) {
-        return super.getValue();
+    protected PivotPoint calculate(int i) {
+        return result;
     }
 
 }

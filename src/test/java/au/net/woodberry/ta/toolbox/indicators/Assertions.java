@@ -22,7 +22,8 @@
  */
 package au.net.woodberry.ta.toolbox.indicators;
 
-import au.net.woodberry.ta.toolbox.indicators.trend.GuppyMultipleMovingAverageIndicator;
+import au.net.woodberry.ta.toolbox.enums.Period;
+import au.net.woodberry.ta.toolbox.object.GuppyMultipleMovingAverage;
 import eu.verdelhan.ta4j.TADecimal;
 import org.assertj.core.data.Offset;
 
@@ -85,19 +86,19 @@ public class Assertions {
         }
     }
 
-    public static void assertGuppyMultipleMovingAverage(GuppyMultipleMovingAverageIndicator.Object gmma, boolean isComplete, Double... expectedValues) {
+    public static void assertGuppyMultipleMovingAverage(GuppyMultipleMovingAverage gmma, boolean isComplete, Double... expectedValues) {
         assertEquals(isComplete, gmma.isComplete());
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.THREE), expectedValues[0]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.FIVE), expectedValues[1]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.EIGHT), expectedValues[2]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.TEN), expectedValues[3]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.TWELVE), expectedValues[4]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.FIFTEEN), expectedValues[5]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.THIRTY), expectedValues[6]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.THIRTYFIVE), expectedValues[7]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.FORTY), expectedValues[8]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.FORTYFIVE), expectedValues[9]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.FIFTY), expectedValues[10]);
-        assertDecimalEquals(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.SIXTY), expectedValues[11]);
+        assertDecimalEquals(gmma.getValue(Period.THREE), expectedValues[0]);
+        assertDecimalEquals(gmma.getValue(Period.FIVE), expectedValues[1]);
+        assertDecimalEquals(gmma.getValue(Period.EIGHT), expectedValues[2]);
+        assertDecimalEquals(gmma.getValue(Period.TEN), expectedValues[3]);
+        assertDecimalEquals(gmma.getValue(Period.TWELVE), expectedValues[4]);
+        assertDecimalEquals(gmma.getValue(Period.FIFTEEN), expectedValues[5]);
+        assertDecimalEquals(gmma.getValue(Period.THIRTY), expectedValues[6]);
+        assertDecimalEquals(gmma.getValue(Period.THIRTYFIVE), expectedValues[7]);
+        assertDecimalEquals(gmma.getValue(Period.FORTY), expectedValues[8]);
+        assertDecimalEquals(gmma.getValue(Period.FORTYFIVE), expectedValues[9]);
+        assertDecimalEquals(gmma.getValue(Period.FIFTY), expectedValues[10]);
+        assertDecimalEquals(gmma.getValue(Period.SIXTY), expectedValues[11]);
     }
 }

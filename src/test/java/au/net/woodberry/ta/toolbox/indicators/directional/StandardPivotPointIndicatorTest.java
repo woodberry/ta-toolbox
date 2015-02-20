@@ -1,5 +1,6 @@
 package au.net.woodberry.ta.toolbox.indicators.directional;
 
+import au.net.woodberry.ta.toolbox.object.PivotPoint;
 import eu.verdelhan.ta4j.TADecimal;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,28 +25,42 @@ public class StandardPivotPointIndicatorTest {
     }
     @Test
     public void testPivotPoint() {
-        assertNotNull(standardPivotPoint.getValue());
-        assertEquals(PIVOT_POINT_VALUE, standardPivotPoint.getValue().toDouble(), DELTA);
+        PivotPoint pivotPoint = standardPivotPoint.getValue(0);
+        assertNotNull(pivotPoint);
+        assertNotNull(pivotPoint.getPivotPoint());
+        assertEquals(PIVOT_POINT_VALUE, standardPivotPoint.getValue(0).getPivotPoint().toDouble(), DELTA);
     }
 
     @Test
     public void testResistanceOne() {
-        assertEquals((PIVOT_POINT_VALUE * 2) - PREVIOUS_LOW, standardPivotPoint.getResistanceOne().toDouble(), DELTA);
+        PivotPoint pivotPoint = standardPivotPoint.getValue(0);
+        assertNotNull(pivotPoint);
+        assertNotNull(pivotPoint.getResistanceOne());
+        assertEquals((PIVOT_POINT_VALUE * 2) - PREVIOUS_LOW, pivotPoint.getResistanceOne().toDouble(), DELTA);
     }
 
     @Test
     public void testResistanceTwo() {
-        assertEquals(PIVOT_POINT_VALUE + (PREVIOUS_HIGH - PREVIOUS_LOW), standardPivotPoint.getResistanceTwo().toDouble(), DELTA);
+        PivotPoint pivotPoint = standardPivotPoint.getValue(0);
+        assertNotNull(pivotPoint);
+        assertNotNull(pivotPoint.getResistanceTwo());
+        assertEquals(PIVOT_POINT_VALUE + (PREVIOUS_HIGH - PREVIOUS_LOW), pivotPoint.getResistanceTwo().toDouble(), DELTA);
     }
 
     @Test
     public void testSupportOne() {
-        assertEquals((PIVOT_POINT_VALUE * 2) - PREVIOUS_HIGH, standardPivotPoint.getSupportOne().toDouble(), DELTA);
+        PivotPoint pivotPoint = standardPivotPoint.getValue(0);
+        assertNotNull(pivotPoint);
+        assertNotNull(pivotPoint.getSupportOne());
+        assertEquals((PIVOT_POINT_VALUE * 2) - PREVIOUS_HIGH, pivotPoint.getSupportOne().toDouble(), DELTA);
     }
 
     @Test
     public void testSupportTwo() {
-        assertEquals(PIVOT_POINT_VALUE - (PREVIOUS_HIGH - PREVIOUS_LOW), standardPivotPoint.getSupportTwo().toDouble(), DELTA);
+        PivotPoint pivotPoint = standardPivotPoint.getValue(0);
+        assertNotNull(pivotPoint);
+        assertNotNull(pivotPoint.getSupportTwo());
+        assertEquals(PIVOT_POINT_VALUE - (PREVIOUS_HIGH - PREVIOUS_LOW), pivotPoint.getSupportTwo().toDouble(), DELTA);
     }
 
 }

@@ -1,6 +1,7 @@
 package au.net.woodberry.ta.toolbox.indicators.trend;
 
 import au.net.woodberry.ta.toolbox.enums.Group;
+import au.net.woodberry.ta.toolbox.enums.Period;
 import au.net.woodberry.ta.toolbox.indicators.StubDataTestUtils;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.indicators.simple.ClosePriceIndicator;
@@ -8,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static au.net.woodberry.ta.toolbox.indicators.Assertions.assertGuppyMultipleMovingAverage;
-import static au.net.woodberry.ta.toolbox.indicators.trend.GuppyMultipleMovingAverageIndicator.Period;
 import static org.junit.Assert.assertEquals;
 
 public class GuppyMultipleMovingAverageIndicatorTest {

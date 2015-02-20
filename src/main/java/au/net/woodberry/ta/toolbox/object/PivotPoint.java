@@ -1,22 +1,21 @@
-package au.net.woodberry.ta.toolbox.indicators.directional;
+package au.net.woodberry.ta.toolbox.object;
 
 import eu.verdelhan.ta4j.TADecimal;
-import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
-public abstract class PivotPointIndicator extends CachedIndicator<TADecimal> {
+public class PivotPoint {
 
-    private TADecimal value; // <- this is the pivot point value
+    private TADecimal pivotPoint; // <- this is the pivot point pivotPoint
     private TADecimal resistanceOne;
     private TADecimal resistanceTwo;
     private TADecimal supportOne;
     private TADecimal supportTwo;
 
-    public TADecimal getValue() {
-        return value;
+    public TADecimal getPivotPoint() {
+        return pivotPoint;
     }
 
-    public void setValue(TADecimal value) {
-        this.value = value;
+    public void setPivotPoint(TADecimal pivotPoint) {
+        this.pivotPoint = pivotPoint;
     }
 
     public TADecimal getResistanceOne() {

@@ -1,11 +1,14 @@
 package au.net.woodberry.ta.toolbox.indicators.trend;
 
 import au.net.woodberry.ta.toolbox.enums.Group;
+import au.net.woodberry.ta.toolbox.enums.Period;
 import au.net.woodberry.ta.toolbox.enums.Sustainability;
+import au.net.woodberry.ta.toolbox.object.GuppyMultipleMovingAverage;
+import au.net.woodberry.ta.toolbox.object.TrendVolatilityLine;
 import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
-public class TrendVolatilityLineIndicator extends CachedIndicator<TrendVolatilityLineIndicator.Object> {
+public class TrendVolatilityLineIndicator extends CachedIndicator<TrendVolatilityLine> {
 
     private final GuppyMultipleMovingAverageIndicator gmmaIndicator;
     private TADecimal entry;
@@ -36,66 +39,29 @@ public class TrendVolatilityLineIndicator extends CachedIndicator<TrendVolatilit
     }
 
     @Override
-    public TrendVolatilityLineIndicator.Object calculate(int i) {
+    public TrendVolatilityLine calculate(int i) {
         
-        GuppyMultipleMovingAverageIndicator.Object gmma = gmmaIndicator.calculate(i);
+        GuppyMultipleMovingAverage gmma = gmmaIndicator.calculate(i);
 
         if (gmma.isComplete() && gmma.getValue(gmma.lowestOf(Group.SHORTTERM)).isGreaterThan(gmma.getValue(gmma.highestOf(Group.LONGTERM)))) {
 
             tvl = entry;
 
-            if (sustainability.equals(Sustainability.UNKNOWN) && tvl.isGreaterThanOrEqual(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.FIFTEEN))) {
+            if (sustainability.equals(Sustainability.UNKNOWN) && tvl.isGreaterThanOrEqual(gmma.getValue(Period.FIFTEEN))) {
                 sustainability = Sustainability.HOPE;
             }
-            if (sustainability.equals(Sustainability.HOPE) && tvl.isLessThanOrEqual(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.FIFTEEN))) {
+            if (sustainability.equals(Sustainability.HOPE) && tvl.isLessThanOrEqual(gmma.getValue(Period.FIFTEEN))) {
                 sustainability = Sustainability.CONFIDENT;
             }
-            if (sustainability.equals(Sustainability.CONFIDENT) && tvl.isLessThanOrEqual(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.THIRTY))) {
+            if (sustainability.equals(Sustainability.CONFIDENT) && tvl.isLessThanOrEqual(gmma.getValue(Period.THIRTY))) {
                 sustainability = Sustainability.CERTAINTY;
             }
-            if (sustainability.equals(Sustainability.CERTAINTY) && tvl.isLessThanOrEqual(gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.SIXTY))) {
-                tvl = gmma.getValue(GuppyMultipleMovingAverageIndicator.Period.THIRTY);
+            if (sustainability.equals(Sustainability.CERTAINTY) && tvl.isLessThanOrEqual(gmma.getValue(Period.SIXTY))) {
+                tvl = gmma.getValue(Period.THIRTY);
             }
         } else {
             sustainability = Sustainability.UNKNOWN;
         }
-        return new TrendVolatilityLineIndicator.Object(tvl, sustainability);
-    }
-
-    public class Object {
-
-        private final TADecimal value;
-        private final Sustainability sustainability;
-
-        public Object(TADecimal value, Sustainability sustainability) {
-            this.value = value;
-            this.sustainability = sustainability;
-        }
-
-        public Sustainability getSustainability() {
-            return sustainability;
-        }
-
-        public TADecimal getValue() {
-            return value;
-        }
-        
-        @Override
-        public boolean equals(java.lang.Object aThat) {
-            if ( this == aThat ) {
-                return true;
-            }
-            if (!(aThat instanceof TrendVolatilityLineIndicator.Object)) {
-                return false;
-            }
-            TrendVolatilityLineIndicator.Object that = (TrendVolatilityLineIndicator.Object)aThat;
-            return this.getSustainability().equals(that.getSustainability())
-                    && this.getValue().equals(that.getValue());
-        }
-        
-        @Override
-        public String toString() {
-            return "Value: " + value + " Sustainability: " + sustainability;
-        }
+        return new TrendVolatilityLine(tvl, sustainability);
     }
 }
