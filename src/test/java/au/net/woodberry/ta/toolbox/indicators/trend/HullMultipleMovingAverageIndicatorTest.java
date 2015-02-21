@@ -47,7 +47,6 @@ public class HullMultipleMovingAverageIndicatorTest {
     @Test
     public void testValueOutsideLongTermGroup() {
         Double[] expectedValues = {6.9821, 6.9786, 6.9592, 6.927, 6.888, 6.8465, 6.6826, 6.6263, 6.5735, 6.5242, 6.4782, 6.4353};
-        System.out.println(hmmaIndicator.getValue(37).toString());
         assertHullMultipleMovingAverage(hmmaIndicator.getValue(37), true, expectedValues);
     }
 
