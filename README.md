@@ -10,11 +10,17 @@ A collection of lesser known Indicators and tools used by Technical Analysis and
 #### Statistics
 * Linear Regression
 
+#### Trackers
+* Hull Multiple Moving Average (HMA)
+
 #### Trend
 * Guppy Multiple Moving Average (GMMA)
+* Hull Multiple Moving Average (GMMA)
 * Trend Volitility Line (TVL)
 * Rate Of Return (RoR)
 
 #### Volatility
 * Count Back Line (CBL)
-* Count Back Line Stoploss (CBL)
+* Count Back Line (CBL) - Stop loss
+* Traders Average True Range (Trader's ATR)
+* Traders Average True Range (Trader's ATR) - Stop loss

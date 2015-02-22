@@ -1,6 +1,7 @@
 package au.net.woodberry.ta.toolbox.indicators.trend;
 
 import au.net.woodberry.ta.toolbox.enums.Period;
+import au.net.woodberry.ta.toolbox.indicators.trackers.EMAIndicator;
 import au.net.woodberry.ta.toolbox.object.MultipleMovingAverage;
 import eu.verdelhan.ta4j.Indicator;
 import eu.verdelhan.ta4j.TADecimal;
