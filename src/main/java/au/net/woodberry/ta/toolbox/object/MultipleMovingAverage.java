@@ -11,14 +11,45 @@ import java.util.Map;
 
 public class MultipleMovingAverage {
 
+    // Total number of moving averages
     private static final int MAP_SIZE = 12;
-
+    
+    // Definitions for period boundaries, i.e. when short term begins and ends etc..
+    private static final int SHORT_TERM_SHORTEST = 0;
+    private static final int SHORT_TERM_LONGEST = 5;
+    private static final int LONG_TERM_SHORTEST = 6;
+    private static final int LONG_TERM_LONGEST = 11;
+    
     private Map<Period, TADecimal> objectMap = new LinkedHashMap<>(MAP_SIZE);
 
     public void setValue(Period period, TADecimal value) {
         objectMap.put(period, value);
     }
 
+    /**
+     * Determines the shortest period for this multiple moving average.
+     * @param group The group to determine the shortest period for.
+     * @return The shortest period. May be null if the group could not be determined
+     */
+    public Period shortestOf(Group group) {
+        List<Period> periods = new ArrayList<>(objectMap.keySet());
+        return group.equals(Group.SHORTTERM) ? periods.get(SHORT_TERM_SHORTEST)
+             : group.equals(Group.LONGTERM) ? periods.get(LONG_TERM_SHORTEST) 
+             : null;
+    }
+
+    /**
+     * Determines the longest period for this multiple moving average.
+     * @param group The group to determine the longest period for.
+     * @return The longest period. May be null if the group could not be determined
+     */
+    public Period longestOf(Group group) {
+        List<Period> periods = new ArrayList<>(objectMap.keySet());
+        return group.equals(Group.SHORTTERM) ? periods.get(SHORT_TERM_LONGEST)
+             : group.equals(Group.LONGTERM) ? periods.get(LONG_TERM_LONGEST)
+             : null;
+    }
+    
     /**
      * @param period A single period for the required value
      * @return A value for the specified period

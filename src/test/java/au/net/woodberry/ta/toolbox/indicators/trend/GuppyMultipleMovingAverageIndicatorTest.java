@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import static au.net.woodberry.ta.toolbox.indicators.Assertions.assertGuppyMultipleMovingAverage;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class GuppyMultipleMovingAverageIndicatorTest {
 
@@ -75,5 +76,44 @@ public class GuppyMultipleMovingAverageIndicatorTest {
     public void testHighestOfLongTermGroup() {
         assertEquals(Period.THIRTY, gmmaIndicator.getValue(Period.SIXTY.getTimeFrame()).highestOf(Group.LONGTERM));
     }
+    
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testShortestOfShortTermGroupThrowsExceptionWhenGmmaIsNotComplete() {
+        assertNull(gmmaIndicator.getValue(Period.THREE.getTimeFrame() - 1).shortestOf(Group.SHORTTERM));
+    }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testLongestOfShortTermGroupThrowsExceptionWhenGmmaIsNotComplete() {
+        assertNull(gmmaIndicator.getValue(Period.THREE.getTimeFrame() - 1).longestOf(Group.SHORTTERM));
+    }
+    
+    @Test
+    public void testShortestOfShortTermGroup() {
+        assertEquals(Period.THREE, gmmaIndicator.getValue(Period.SIXTY.getTimeFrame()).shortestOf(Group.SHORTTERM));
+    }
+    
+    @Test
+    public void testLongestOfShortTermGroup() {
+        assertEquals(Period.FIFTEEN, gmmaIndicator.getValue(Period.SIXTY.getTimeFrame()).longestOf(Group.SHORTTERM));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testShortestOfLongTermGroupThrowsExceptionWhenGmmaIsNotComplete() {
+        assertNull(gmmaIndicator.getValue(Period.THREE.getTimeFrame() - 1).shortestOf(Group.LONGTERM));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testLongestOfLongTermGroupThrowsExceptionWhenGmmaIsNotComplete() {
+        assertNull(gmmaIndicator.getValue(Period.THREE.getTimeFrame() - 1).longestOf(Group.LONGTERM));
+    }
+
+    @Test
+    public void testShortestOfLongTermGroup() {
+        assertEquals(Period.THIRTY, gmmaIndicator.getValue(Period.SIXTY.getTimeFrame()).shortestOf(Group.LONGTERM));
+    }
+
+    @Test
+    public void testLongestOfLongTermGroup() {
+        assertEquals(Period.SIXTY, gmmaIndicator.getValue(Period.SIXTY.getTimeFrame()).longestOf(Group.LONGTERM));
+    }
 }
