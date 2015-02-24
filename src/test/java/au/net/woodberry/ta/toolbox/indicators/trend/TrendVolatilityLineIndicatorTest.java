@@ -119,13 +119,12 @@ public class TrendVolatilityLineIndicatorTest {
         assertEquals(Sustainability.CERTAINTY, tvl.getSustainability());
 
         tvl = tvlIndicator.getValue(index(timeSeries, DateTime.parse("12/11/12", DTF)));
-        assertNotNull(tvl.getValue());
-        assertEquals(4471.8808, tvl.getValue().toDouble(), DELTA);
+        assertNull(tvl.getValue());
         assertEquals(Sustainability.UNKNOWN, tvl.getSustainability());
     }
     
     @Test
-    public void testCalculateLastTvlValueIsKeptWhileSustainabilityIsUnknownTC1() {
+    public void testCalculateLastTvlValueIsNullWhileSustainabilityIsUnknownTC1() {
 
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
@@ -133,12 +132,11 @@ public class TrendVolatilityLineIndicatorTest {
 
         TrendVolatilityLine tvl = tvlIndicator.getValue(index(timeSeries, DateTime.parse("19/11/12", DTF))); // Unknown
         assertEquals(Sustainability.UNKNOWN, tvl.getSustainability());
-        assertNotNull(tvl.getValue());
-        assertEquals(4471.8808, tvl.getValue().toDouble(), DELTA);
+        assertNull(tvl.getValue());
     }
 
     @Test
-    public void testCalculateTvlValueIsResetForNewTrendTC1() {
+    public void testCalculateNewTvlValueForNewTrendTC1() {
 
         final TADecimal entry = TADecimal.valueOf(4245.7);
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_TREND_VOLATILITY_LINE_TC1.stub", "\t", null, DTF));
@@ -146,7 +144,7 @@ public class TrendVolatilityLineIndicatorTest {
 
         TrendVolatilityLine tvl = tvlIndicator.getValue(index(timeSeries, DateTime.parse("3/12/12", DTF)));
         assertNotNull(tvl.getValue());
-        assertEquals(entry.toDouble(), tvl.getValue().toDouble(), DELTA);
+        assertEquals(4462.6136, tvl.getValue().toDouble(), DELTA);
     }
     
     @Test

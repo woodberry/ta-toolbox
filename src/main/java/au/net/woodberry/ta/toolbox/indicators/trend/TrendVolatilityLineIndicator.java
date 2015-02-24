@@ -8,11 +8,14 @@ import eu.verdelhan.ta4j.Indicator;
 import eu.verdelhan.ta4j.TADecimal;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TrendVolatilityLineIndicator extends CachedIndicator<TrendVolatilityLine> {
 
     private final Indicator<? extends MultipleMovingAverage> mmaIndicator;
-    private TADecimal entry;
-    private TADecimal tvl;
+    private final TADecimal entry;
+    private List<TADecimal> tvls;
     private Sustainability sustainability;
 
     /**
@@ -32,6 +35,8 @@ public class TrendVolatilityLineIndicator extends CachedIndicator<TrendVolatilit
         this.sustainability = Sustainability.UNKNOWN;
         this.mmaIndicator = mmaIndicator;
         this.entry = entry;
+        this.tvls = new ArrayList<>();
+        tvls.add(entry);
     }
 
     public TrendVolatilityLineIndicator(Indicator<? extends MultipleMovingAverage> mmaIndicator, TADecimal entry) {
@@ -42,26 +47,32 @@ public class TrendVolatilityLineIndicator extends CachedIndicator<TrendVolatilit
     protected TrendVolatilityLine calculate(int index) {
         
         MultipleMovingAverage mma = mmaIndicator.getValue(index);
-
+        TADecimal tvl = null;
         if (mma.isComplete() && mma.getValue(mma.lowestOf(Group.SHORTTERM)).isGreaterThan(mma.getValue(mma.highestOf(Group.LONGTERM)))) {
-
-            tvl = entry;
-
-            if (sustainability.equals(Sustainability.UNKNOWN) && tvl.isGreaterThanOrEqual(mma.getValue(mma.longestOf(Group.SHORTTERM)))) {
-                sustainability = Sustainability.HOPE;
+            
+            if (!sustainability.equals(Sustainability.CERTAINTY)) {
+                
+                if (sustainability.equals(Sustainability.UNKNOWN) && entry.isGreaterThanOrEqual(mma.getValue(mma.longestOf(Group.SHORTTERM)))) {
+                    sustainability = Sustainability.HOPE;
+                }
+                if (sustainability.equals(Sustainability.HOPE) && entry.isLessThanOrEqual(mma.getValue(mma.longestOf(Group.SHORTTERM)))) {
+                    sustainability = Sustainability.CONFIDENT;
+                }
+                if (sustainability.equals(Sustainability.CONFIDENT) && entry.isLessThanOrEqual(mma.getValue(mma.shortestOf(Group.LONGTERM)))) {
+                    sustainability = Sustainability.CERTAINTY;
+                }
             }
-            if (sustainability.equals(Sustainability.HOPE) && tvl.isLessThanOrEqual(mma.getValue(mma.longestOf(Group.SHORTTERM)))) {
-                sustainability = Sustainability.CONFIDENT;
+            if (sustainability.equals(Sustainability.CERTAINTY) && lastTvl().isLessThanOrEqual(mma.getValue(mma.longestOf(Group.LONGTERM)))) {
+                tvls.add(mma.getValue(mma.shortestOf(Group.LONGTERM)));
             }
-            if (sustainability.equals(Sustainability.CONFIDENT) && tvl.isLessThanOrEqual(mma.getValue(mma.shortestOf(Group.LONGTERM)))) {
-                sustainability = Sustainability.CERTAINTY;
-            }
-            if (sustainability.equals(Sustainability.CERTAINTY) && tvl.isLessThanOrEqual(mma.getValue(mma.longestOf(Group.LONGTERM)))) {
-                tvl = mma.getValue(mma.shortestOf(Group.LONGTERM));
-            }
+            tvl = lastTvl();
         } else {
             sustainability = Sustainability.UNKNOWN;
         }
         return new TrendVolatilityLine(tvl, sustainability);
+    }
+    
+    private TADecimal lastTvl() {
+        return tvls.get(tvls.size() - 1);
     }
 }

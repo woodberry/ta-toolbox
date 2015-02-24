@@ -17,7 +17,7 @@ public class TradersATRIndicator extends CachedIndicator<TADecimal> {
      * @param referenceIndicator A value-based indicator used for reference e.g. Closing Price
      * @param displacementFactor A displacement factor e.g. 1xATR, 2xATR etc.. always a positive value
      */
-    public TradersATRIndicator(AverageTrueRangeIndicator atrIndicator, Indicator<? extends TADecimal> referenceIndicator, int displacementFactor) {
+    public TradersATRIndicator(AverageTrueRangeIndicator atrIndicator, Indicator<? extends TADecimal> referenceIndicator, double displacementFactor) {
         if (atrIndicator == null) {
             throw new IllegalArgumentException("Supplied AverageTrueRangeIndicator is invalid: NULL");
         }

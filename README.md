@@ -24,3 +24,4 @@ A collection of lesser known Indicators and tools used by Technical Analysis and
 * Count Back Line (CBL) - Stop loss
 * Traders Average True Range (Trader's ATR)
 * Traders Average True Range (Trader's ATR) - Stop loss
+* Range Indicator
