@@ -9,9 +9,9 @@ import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
 public class RangeIndicator extends CachedIndicator<Range> {
     
-    private static final double DEFAULT_DISPLACEMENT_LOWER = 2.5;
-    private static final double DEFAULT_DISPLACEMENT_UPPER = 3.0;
-    private static final int DEFAULT_TIME_FRAME = 13;
+    public static final double DEFAULT_DISPLACEMENT_LOWER = 2.5;
+    public static final double DEFAULT_DISPLACEMENT_UPPER = 3.0;
+    public static final int DEFAULT_TIME_FRAME = 13;
     
     private final TimeSeries timeSeries;
     private final HMAIndicator hmaIndicator;
