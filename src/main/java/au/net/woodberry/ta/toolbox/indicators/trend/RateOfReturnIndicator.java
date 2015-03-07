@@ -8,24 +8,19 @@ public class RateOfReturnIndicator extends CachedIndicator<TADecimal> {
 
     private final Indicator<? extends TADecimal> priceIndicator;
     private final Indicator<? extends TADecimal> referenceIndicator;
-    private final int referencePoint;
-    
-    public RateOfReturnIndicator(Indicator<? extends TADecimal> priceIndicator) {
-        this(priceIndicator, priceIndicator, 0);
-    }
-    
-    public RateOfReturnIndicator(Indicator<? extends TADecimal> priceIndicator, Indicator<? extends TADecimal> referenceIndicator) {
-        this(priceIndicator, referenceIndicator, 0);
-    }
 
+    public RateOfReturnIndicator(Indicator<? extends TADecimal> priceIndicator) {
+        this(priceIndicator, priceIndicator);
+    }
+    
     /**
      * Perform a rate of return calculation
      *
      * @param priceIndicator An indicator based on the price information
-     * @param referenceIndicator Any indicator, ideally one which smooths the price information such as a Moving average, Average True Range, Linear regression
-     * @param referencePoint A reference point within the time series, default is the start index
+     * @param referenceIndicator Any indicator, ideally one which smooths the price information such as a Moving average, Average True Range, Linear regression, from which 
+     *                           the calculation is performed.
      */
-    public RateOfReturnIndicator(Indicator<? extends TADecimal> priceIndicator, Indicator<? extends TADecimal> referenceIndicator, int referencePoint) {
+    public RateOfReturnIndicator(Indicator<? extends TADecimal> priceIndicator, Indicator<? extends TADecimal> referenceIndicator) {
         if (priceIndicator == null) {
             throw new IllegalArgumentException("Supplied Indicator (price) is invalid: NULL");
         }
@@ -34,19 +29,13 @@ public class RateOfReturnIndicator extends CachedIndicator<TADecimal> {
         }
         this.priceIndicator = priceIndicator;
         this.referenceIndicator = referenceIndicator;
-        this.referencePoint = referencePoint;
     }
-    
-    private TADecimal multiplier(int index) {
-        return (priceIndicator.getValue(index).minus(TADecimal.valueOf(referencePoint))).dividedBy(priceIndicator.getValue(index)).abs();
-    }
-    
+
     @Override
     public TADecimal calculate(int index) {
-        TADecimal currentValue = referenceIndicator.getValue(index);
-        TADecimal referencePoint = referenceIndicator.getValue(this.referencePoint);
-        TADecimal value = priceIndicator.getValue(index);
-        TADecimal multiplier = multiplier(index);
-        return (currentValue.minus(referencePoint)).dividedBy(value).multipliedBy(multiplier).multipliedBy(TADecimal.HUNDRED);
+        TADecimal current = referenceIndicator.getValue(index);
+        TADecimal first = referenceIndicator.getValue(0);
+        TADecimal price = priceIndicator.getValue(index);
+        return current.minus(first).dividedBy(price).multipliedBy(TADecimal.HUNDRED);
     }
 }
