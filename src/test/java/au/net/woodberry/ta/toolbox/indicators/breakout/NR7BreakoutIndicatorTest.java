@@ -18,29 +18,28 @@ public class NR7BreakoutIndicatorTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void testThrowsExceptionNullTimeSeries() {
-        new NR7BreakoutIndicator(null, new Tick(null, null));
+        new NR7BreakoutIndicator(null, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testThrowsExceptionNullTick() {
-        new NR7BreakoutIndicator(new TimeSeries(Arrays.asList(new Tick(null, null))), null);
+    public void testThrowsExceptionTimeSeriesSizeIsTooSmall() {
+        new NR7BreakoutIndicator(new TimeSeries(Arrays.asList(new Tick(null, null))), 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThrowsExceptionTickIsAtTimeSeriesEnd() {
+        new NR7BreakoutIndicator(new TimeSeries(Arrays.asList(new Tick(null, DateTime.parse("2001-01-01")), new Tick(null, DateTime.parse("2001-01-02")))), 1);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void testThrowsExceptionTickNotWithinTimeSeries() {
-        new NR7BreakoutIndicator(new TimeSeries(Arrays.asList(new Tick(null, DateTime.parse("2001-01-01")))), new Tick(null, DateTime.parse("2001-01-02")));
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testThrowsExceptionTickIsAtTimeSeriesEnd() {
-        new NR7BreakoutIndicator(new TimeSeries(Arrays.asList(new Tick(null, DateTime.parse("2001-01-01")))), new Tick(null, DateTime.parse("2001-01-01")));
+        new NR7BreakoutIndicator(new TimeSeries(Arrays.asList(new Tick(null, DateTime.parse("2001-01-01")), new Tick(null, DateTime.parse("2001-01-02")))), 2);
     }
     
     @Test
     public void testAtIndexLessThanNrIndexReturnsNull() {
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_NR7_BREAKOUT_INDICATOR_TC2.stub"));
-        Tick nrTick = timeSeries.getTick(3); 
-        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, nrTick);
+        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 3);
         NR7Breakout value = breakoutIndicator.getValue(2);
         assertNull(value);
     }
@@ -48,8 +47,7 @@ public class NR7BreakoutIndicatorTest {
     @Test
     public void testAtNrIndexReturnsNull() {
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_NR7_BREAKOUT_INDICATOR_TC2.stub"));
-        Tick nrTick = timeSeries.getTick(3);
-        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, nrTick);
+        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 3);
         NR7Breakout value = breakoutIndicator.getValue(3);
         assertNull(value);
     }
@@ -57,8 +55,7 @@ public class NR7BreakoutIndicatorTest {
     @Test
     public void testReturnsNullBeforeBreakoutIndex() {
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_NR7_BREAKOUT_INDICATOR_TC2.stub"));
-        Tick nrTick = timeSeries.getTick(3);
-        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, nrTick);
+        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 3);
         NR7Breakout value = breakoutIndicator.getValue(5);
         assertNull(value);
     }
@@ -66,8 +63,7 @@ public class NR7BreakoutIndicatorTest {
     @Test
     public void testReturnsBearishResultAtBreakoutIndex() {
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_NR7_BREAKOUT_INDICATOR_TC2.stub"));
-        Tick nrTick = timeSeries.getTick(3);
-        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, nrTick);
+        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 3);
         NR7Breakout value = breakoutIndicator.getValue(6);
         assertNotNull(value);
         assertEquals(3, value.getPeriods());
@@ -77,8 +73,7 @@ public class NR7BreakoutIndicatorTest {
     @Test
     public void testReturnsBearishResultAfterBreakoutIndex() {
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_NR7_BREAKOUT_INDICATOR_TC2.stub"));
-        Tick nrTick = timeSeries.getTick(3);
-        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, nrTick);
+        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 3);
         NR7Breakout value = breakoutIndicator.getValue(7);
         assertNotNull(value);
         assertEquals(3, value.getPeriods());
@@ -88,8 +83,7 @@ public class NR7BreakoutIndicatorTest {
     @Test
     public void testReturnsBullishResultAtBreakoutIndex() {
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_NR7_BREAKOUT_INDICATOR_TC3.stub"));
-        Tick nrTick = timeSeries.getTick(0);
-        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, nrTick);
+        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 0);
         NR7Breakout value = breakoutIndicator.getValue(1);
         assertNotNull(value);
         assertEquals(1, value.getPeriods());
@@ -99,8 +93,7 @@ public class NR7BreakoutIndicatorTest {
     @Test
     public void testReturnsBullishResultAfterBreakoutIndex() {
         TimeSeries timeSeries = new TimeSeries(StubDataTestUtils.createTickData("/TEST_NR7_BREAKOUT_INDICATOR_TC3.stub"));
-        Tick nrTick = timeSeries.getTick(0);
-        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, nrTick);
+        NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 0);
         NR7Breakout value = breakoutIndicator.getValue(2);
         assertNotNull(value);
         assertEquals(1, value.getPeriods());

@@ -8,37 +8,26 @@ import eu.verdelhan.ta4j.indicators.CachedIndicator;
 
 public class NR7BreakoutIndicator extends CachedIndicator<NR7Breakout> {
 
-    private final Tick nr7;
     private final TimeSeries timeSeries;
     private final Integer nr7Index;
     private final int firstIndex;
 
-    public NR7BreakoutIndicator(TimeSeries timeSeries, Tick nr7) {
+    public NR7BreakoutIndicator(TimeSeries timeSeries, int nr7Index) {
         if (timeSeries == null) {
             throw new IllegalArgumentException("Supplied TimeSeries is invalid: NULL");
         }
-        if (nr7 == null) {
-            throw new IllegalArgumentException("Supplied Tick is invalid: NULL");
-        }
-        this.nr7Index = findTickPosition(timeSeries, nr7);
-        if (nr7Index == null) {
-            throw new IllegalArgumentException("Supplied Tick is invalid: Tick not found within the TimeSeries");
+        if (timeSeries.getSize() <= 2) {
+            throw new IllegalArgumentException("Supplied TimeSeries is invalid: Cannot be less than size of 2");
         }
         if (nr7Index == timeSeries.getEnd()) {
-            throw new IllegalArgumentException("Supplied Tick is invalid: Cannot be the last tick within the TimeSeries");
+            throw new IllegalArgumentException("Supplied Integer index is invalid: Cannot be the last index within the TimeSeries");
         }
-        this.nr7 = nr7;
+        if (nr7Index > timeSeries.getEnd()) {
+            throw new IllegalArgumentException("Supplied Integer index is invalid: Not within the TimeSeries");
+        }
+        this.nr7Index = nr7Index;
         this.firstIndex = nr7Index + 1; // First possible breakout occurs after the nr7 tick
         this.timeSeries = timeSeries;
-    }
-
-    private static Integer findTickPosition(TimeSeries timeSeries, Tick tick) {
-        for (int i = timeSeries.getBegin(); i <= timeSeries.getEnd(); i++) {
-            if (timeSeries.getTick(i).getEndTime().isEqual(tick.getEndTime())) {
-                return i;
-            }
-        }
-        return null;
     }
 
     @Override
@@ -49,11 +38,12 @@ public class NR7BreakoutIndicator extends CachedIndicator<NR7Breakout> {
         for (int i = firstIndex; i <= index; i++) {
             int periods = i - nr7Index;
             Tick tick = timeSeries.getTick(i);
-            if (tick.getClosePrice().isGreaterThan(nr7.getMaxPrice())) { // Return the first bullish signal found
-                return new NR7Breakout(nr7, tick, Sentiment.BULLISH, periods);
+            Tick nr7Tick = timeSeries.getTick(nr7Index);
+            if (tick.getClosePrice().isGreaterThan(nr7Tick.getMaxPrice())) { // Return the first bullish signal found
+                return new NR7Breakout(nr7Tick, tick, Sentiment.BULLISH, periods);
             }
-            if (tick.getClosePrice().isLessThan(nr7.getMinPrice())) { // Return the first bearish signal found
-                return new NR7Breakout(nr7, tick, Sentiment.BEARISH, periods);
+            if (tick.getClosePrice().isLessThan(nr7Tick.getMinPrice())) { // Return the first bearish signal found
+                return new NR7Breakout(nr7Tick, tick, Sentiment.BEARISH, periods);
             }
         }
         return null;
