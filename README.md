@@ -4,6 +4,10 @@ A collection of lesser known Indicators and tools used by Technical Analysis and
 
 ### Indicators:
 
+#### Breakout
+* NR7
+* NR7 Breakout
+
 #### Directional
 * Pivot Points - Standard
 
