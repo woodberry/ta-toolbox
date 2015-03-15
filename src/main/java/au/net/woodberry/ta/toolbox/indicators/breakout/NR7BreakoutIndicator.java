@@ -12,6 +12,17 @@ public class NR7BreakoutIndicator extends CachedIndicator<NR7Breakout> {
     private final Integer nr7Index;
     private final int firstIndex;
 
+    /**
+     * Bulkowski's NR7
+     *
+     * The NR7 is based on the high-low price range that is the smallest of the prior six days (seven days total). 
+     * When an NR7 occurs, it means that today's price is the narrowest of the seven days.
+     *
+     * http://thepatternsite.com/nr7.html
+     *
+     * @param timeSeries A TimeSeries, containing both a max and min price
+     * @param nr7Index The index position where the nr7 signal exists
+     */
     public NR7BreakoutIndicator(TimeSeries timeSeries, int nr7Index) {
         if (timeSeries == null) {
             throw new IllegalArgumentException("Supplied TimeSeries is invalid: NULL");
@@ -36,16 +47,16 @@ public class NR7BreakoutIndicator extends CachedIndicator<NR7Breakout> {
             return null;
         }
         for (int i = firstIndex; i <= index; i++) {
-            int periods = i - nr7Index;
             Tick tick = timeSeries.getTick(i);
             Tick nr7Tick = timeSeries.getTick(nr7Index);
             if (tick.getClosePrice().isGreaterThan(nr7Tick.getMaxPrice())) { // Return the first bullish signal found
-                return new NR7Breakout(nr7Tick, tick, Sentiment.BULLISH, periods);
+                return new NR7Breakout(nr7Tick, tick, Sentiment.BULLISH);
             }
             if (tick.getClosePrice().isLessThan(nr7Tick.getMinPrice())) { // Return the first bearish signal found
-                return new NR7Breakout(nr7Tick, tick, Sentiment.BEARISH, periods);
+                return new NR7Breakout(nr7Tick, tick, Sentiment.BEARISH);
             }
         }
         return null;
     }
+
 }

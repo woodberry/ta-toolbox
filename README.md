@@ -10,7 +10,6 @@ A collection of lesser known Indicators and tools used by Technical Analysis and
 
 #### Directional
 * Pivot Points - Standard
-* Chart Pattern
 
 #### Statistics
 * Linear Regression

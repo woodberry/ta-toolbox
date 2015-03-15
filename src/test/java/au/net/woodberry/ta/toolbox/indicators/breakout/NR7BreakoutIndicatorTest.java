@@ -66,7 +66,6 @@ public class NR7BreakoutIndicatorTest {
         NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 3);
         NR7Breakout value = breakoutIndicator.getValue(6);
         assertNotNull(value);
-        assertEquals(3, value.getPeriods());
         assertEquals(Sentiment.BEARISH, value.getSentiment());
     }
     
@@ -76,7 +75,6 @@ public class NR7BreakoutIndicatorTest {
         NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 3);
         NR7Breakout value = breakoutIndicator.getValue(7);
         assertNotNull(value);
-        assertEquals(3, value.getPeriods());
         assertEquals(Sentiment.BEARISH, value.getSentiment());
     }
 
@@ -86,7 +84,6 @@ public class NR7BreakoutIndicatorTest {
         NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 0);
         NR7Breakout value = breakoutIndicator.getValue(1);
         assertNotNull(value);
-        assertEquals(1, value.getPeriods());
         assertEquals(Sentiment.BULLISH, value.getSentiment());
     }
 
@@ -96,7 +93,6 @@ public class NR7BreakoutIndicatorTest {
         NR7BreakoutIndicator breakoutIndicator = new NR7BreakoutIndicator(timeSeries, 0);
         NR7Breakout value = breakoutIndicator.getValue(2);
         assertNotNull(value);
-        assertEquals(1, value.getPeriods());
         assertEquals(Sentiment.BULLISH, value.getSentiment());
     }
 }

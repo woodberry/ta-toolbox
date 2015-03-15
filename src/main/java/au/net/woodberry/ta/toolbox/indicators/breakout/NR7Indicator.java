@@ -12,6 +12,16 @@ public class NR7Indicator extends CachedIndicator<Tick> {
     
     private final TimeSeries timeSeries;
 
+    /**
+     * Bulkowski's NR7 (Narrow Range 7)
+     * 
+     * The NR7 is based on the high-low price range that is the smallest of the prior six days (seven days total). 
+     * When an NR7 occurs, it means that today's price is the narrowest of the seven days.
+     * 
+     * http://thepatternsite.com/nr7.html
+     *
+     * @param timeSeries A TimeSeries, containing both a max and min price
+     */
     public NR7Indicator(TimeSeries timeSeries) {
         if (timeSeries == null) {
             throw new IllegalArgumentException("Supplied TimeSeries is invalid: NULL");

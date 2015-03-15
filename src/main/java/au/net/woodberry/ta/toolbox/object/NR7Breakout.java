@@ -8,15 +8,19 @@ public class NR7Breakout {
     private final Sentiment sentiment;
     private final Tick nr7;
     private final Tick breakout;
-    private final int periods;
-    
-    public NR7Breakout(Tick nr7, Tick breakout, Sentiment sentiment, int periods) {
+
+    /**
+     * *
+     * @param nr7 The tick at which the nr7 pattern has formed and the pattern ends
+     * @param breakout The tick at which a breakout is signalled
+     * @param sentiment The sentiment of the breakout
+     */
+    public NR7Breakout(Tick nr7, Tick breakout, Sentiment sentiment) {
         this.nr7 = nr7;
         this.breakout = breakout;
         this.sentiment = sentiment;
-        this.periods = periods;
     }
-    
+
     public Sentiment getSentiment() {
         return sentiment;
     }
@@ -29,14 +33,10 @@ public class NR7Breakout {
         return breakout;
     }
 
-    public int getPeriods() {
-        return periods;
-    }
-    
     @Override
     public String toString() {
-        return "NR7 tick: [Date: " + nr7.getEndTime() + ", Close: " + nr7.getClosePrice() + "] " +
-               "Breakout Tick: [Date:" + breakout.getEndTime() + ", Close:" + breakout.getClosePrice() + "] " +
-               "Sentiment: " + sentiment + " Periods: " + periods;
+        return "NR7 tick: [Date: " + nr7.getEndTime() + "] " +
+               "Breakout Tick: [Date:" + breakout.getEndTime() + "] " +
+               "Sentiment: " + sentiment;
     }
 }
