@@ -14,14 +14,11 @@ public enum PivotPointRegion {
 
     private final int rank;
 
-    /**
-     * @param rank Internal rank integer used to determine the direction between two regions
-     */
     PivotPointRegion(int rank) {
         this.rank = rank;
     }
     
-    private int getRank() {
+    public int getRank() {
         return rank;
     }
 

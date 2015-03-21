@@ -12,6 +12,10 @@ public class StandardPivotPointIndicator extends CachedIndicator<PivotPoint> {
     private TADecimal resistanceTwo;
     private TADecimal supportOne;
     private TADecimal supportTwo;
+
+    public StandardPivotPointIndicator(double prevHigh, double prevLow, double prevClose) {
+        this(TADecimal.valueOf(prevHigh), TADecimal.valueOf(prevLow), TADecimal.valueOf(prevClose));
+    }
     
     /**
      * Reference: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:pivot_points
@@ -46,6 +50,10 @@ public class StandardPivotPointIndicator extends CachedIndicator<PivotPoint> {
 
     @Override
     protected PivotPoint calculate(int i) {
+        return result;
+    }
+    
+    public PivotPoint getResult() {
         return result;
     }
 
