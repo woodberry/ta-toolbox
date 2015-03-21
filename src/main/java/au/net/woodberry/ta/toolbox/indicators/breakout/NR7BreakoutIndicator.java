@@ -13,7 +13,7 @@ public class NR7BreakoutIndicator extends CachedIndicator<NR7Breakout> {
     private final int firstIndex;
 
     /**
-     * Bulkowski's NR7
+     * Bulkowski's NR7 (Narrow Range) - based on 7 periods of data
      *
      * The NR7 is based on the high-low price range that is the smallest of the prior six days (seven days total). 
      * When an NR7 occurs, it means that today's price is the narrowest of the seven days.
