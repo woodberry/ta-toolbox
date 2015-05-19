@@ -2,26 +2,29 @@ package au.net.woodberry.ta.toolbox.object;
 
 import au.net.woodberry.ta.toolbox.enums.Group;
 import au.net.woodberry.ta.toolbox.enums.Period;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Maps;
 import eu.verdelhan.ta4j.TADecimal;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MultipleMovingAverage {
 
     // Total number of moving averages
     private static final int MAP_SIZE = 12;
     
-    // Definitions for period boundaries, i.e. when short term begins and ends etc..
-    private static final int SHORT_TERM_SHORTEST = 0;
-    private static final int SHORT_TERM_LONGEST = 5;
-    private static final int LONG_TERM_SHORTEST = 6;
-    private static final int LONG_TERM_LONGEST = 11;
+    // Map sorted by the period's time frame
+    private Map<Period, TADecimal> objectMap = new TreeMap<>(new Comparator<Period>() {
+        @Override
+        public int compare(Period p1, Period p2) {
+            return p1.getTimeFrame() == p2.getTimeFrame() ? 0 : p1.getTimeFrame() > p2.getTimeFrame() ? 1 : -1;
+        }
+    });
     
-    private Map<Period, TADecimal> objectMap = new LinkedHashMap<>(MAP_SIZE);
-
     public void setValue(Period period, TADecimal value) {
         objectMap.put(period, value);
     }
@@ -32,10 +35,9 @@ public class MultipleMovingAverage {
      * @return The shortest period. May be null if the group could not be determined
      */
     public Period shortestOf(Group group) {
-        List<Period> periods = new ArrayList<>(objectMap.keySet());
-        return group.equals(Group.SHORTTERM) ? periods.get(SHORT_TERM_SHORTEST)
-             : group.equals(Group.LONGTERM) ? periods.get(LONG_TERM_SHORTEST) 
-             : null;
+        // Create a list from the map, filtered by group and return the first entry (shortest period)
+        ArrayList<Period> periods = new ArrayList<>(Maps.filterEntries(objectMap, groupPredicate(group)).keySet());
+        return periods.get(0);
     }
 
     /**
@@ -44,10 +46,9 @@ public class MultipleMovingAverage {
      * @return The longest period. May be null if the group could not be determined
      */
     public Period longestOf(Group group) {
-        List<Period> periods = new ArrayList<>(objectMap.keySet());
-        return group.equals(Group.SHORTTERM) ? periods.get(SHORT_TERM_LONGEST)
-             : group.equals(Group.LONGTERM) ? periods.get(LONG_TERM_LONGEST)
-             : null;
+        // Create a list from the map, filtered by group and return the last entry (longest period)
+        ArrayList<Period> periods = new ArrayList<>(Maps.filterEntries(objectMap, groupPredicate(group)).keySet());
+        return periods.get(periods.size() - 1);
     }
     
     /**
@@ -55,9 +56,6 @@ public class MultipleMovingAverage {
      * @return A value for the specified period
      */
     public TADecimal getValue(Period period) {
-        if (period == null) {
-            throw new IllegalArgumentException("Supplied Period is invalid: NULL");
-        }
         return objectMap.get(period);
     }
 
@@ -69,7 +67,8 @@ public class MultipleMovingAverage {
     public Period lowestOf(Group group) {
         Period lowest = null;
         TADecimal lowestValue = null;
-        for (Period period : objectMap.keySet()) {
+        for (Map.Entry<Period, TADecimal> entry : objectMap.entrySet()) {
+            Period period = entry.getKey();
             if (period.getGroup().equals(group)) {
                 if (lowest == null || objectMap.get(period).isLessThan(lowestValue)) {
                     lowest = period;
@@ -88,7 +87,8 @@ public class MultipleMovingAverage {
     public Period highestOf(Group group) {
         Period highest = null;
         TADecimal highestValue = null;
-        for (Period period : objectMap.keySet()) {
+        for (Map.Entry<Period, TADecimal> entry : objectMap.entrySet()) {
+            Period period = entry.getKey();
             if (period.getGroup().equals(group)) {
                 if (highest == null || objectMap.get(period).isGreaterThan(highestValue)) {
                     highest = period;
@@ -104,7 +104,8 @@ public class MultipleMovingAverage {
      */
     public List<TADecimal> getValues() {
         List<TADecimal> values = new ArrayList<>();
-        for (Period period : objectMap.keySet()) {
+        for (Map.Entry<Period, TADecimal> entry : objectMap.entrySet()) {
+            Period period = entry.getKey();
             values.add(getValue(period));
         }
         return values;
@@ -116,7 +117,8 @@ public class MultipleMovingAverage {
      */
     public List<TADecimal> getValues(Group group) {
         List<TADecimal> values = new ArrayList<>();
-        for (Period period : objectMap.keySet()) {
+        for (Map.Entry<Period, TADecimal> entry : objectMap.entrySet()) {
+            Period period = entry.getKey();
             if (period.getGroup().equals(group)) {
                 values.add(getValue(period));
             }
@@ -132,7 +134,8 @@ public class MultipleMovingAverage {
      */
     public boolean isComplete() {
         // Ensure values defined for a period are not null and that the total map size is expected
-        for (Period period : objectMap.keySet()) {
+        for (Map.Entry<Period, TADecimal> entry : objectMap.entrySet()) {
+            Period period = entry.getKey();
             if (objectMap.get(period) == null) {
                 return false;
             }
@@ -147,5 +150,19 @@ public class MultipleMovingAverage {
             builder.append(period + ": " + objectMap.get(period) + " ");
         }
         return builder.toString();
+    }
+
+    /**
+     * Filters the map, according to the group
+     *
+     * @param group The group to perform the filtering on
+     */
+    private static Predicate<Map.Entry<Period, TADecimal>> groupPredicate(final Group group) {
+        return new Predicate<Map.Entry<Period, TADecimal>>() {
+            @Override
+            public boolean apply(Map.Entry<Period, TADecimal> entry) {
+                return entry.getKey().getGroup().equals(group);
+            }
+        };
     }
 }
